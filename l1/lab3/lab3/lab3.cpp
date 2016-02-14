@@ -3,12 +3,60 @@
 
 #include "stdafx.h"
 
-static const int SIZE = 3;
+//static const int SIZE = 1;
 
-void ReadMatrix(double **matrix, std::ifstream &fin, const int size)
+struct SquareMatrix
 {
-	for (int i = 0; i < size; i++)
-		for (int j = 0; j < size; j++)
+	double **matrix;
+	size_t size;
+
+	SquareMatrix(size_t Size);
+	SquareMatrix(const SquareMatrix &SquareMatrix);
+	size_t getSize();
+	void ReadFromFile(std::ifstream &fin);
+	void Print();
+	void Transpose();
+	SquareMatrix operator*= (const double number);
+	double &operator() (size_t i, size_t j);
+	~SquareMatrix();
+};
+
+SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y);
+double Determinant(SquareMatrix &matrix);
+SquareMatrix AdditionMatrix(SquareMatrix &matrix);
+int IntSqrt(int number);
+int ElementsCount(std::ifstream &fin);
+
+
+SquareMatrix::SquareMatrix(size_t Size)
+{
+	size = Size;
+	matrix = new double *[size];
+	for (size_t i = 0; i < size; i++)
+		matrix[i] = new double[size];
+}
+
+SquareMatrix::SquareMatrix(const SquareMatrix &Matrix)
+{
+	size = Matrix.size;
+	matrix = new double *[size];
+	for (size_t i = 0; i < size; i++)
+	{
+		matrix[i] = new double[size];
+		for (size_t j = 0; j < size; j++)
+			matrix[i][j] = Matrix.matrix[i][j];
+	}
+}
+
+size_t SquareMatrix::getSize()
+{
+	return size;
+}
+
+void SquareMatrix::ReadFromFile(std::ifstream &fin)
+{
+	for (size_t i = 0; i < size; i++)
+		for (size_t j = 0; j < size; j++)
 		{
 			double temp;
 			fin >> temp;
@@ -16,39 +64,59 @@ void ReadMatrix(double **matrix, std::ifstream &fin, const int size)
 		}
 }
 
-void PrintMatrix(double **matrix, const int size)
+void SquareMatrix::Print()
 {
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (size_t j = 0; j < size; j++)
 			std::cout << std::fixed << std::setprecision(3) << matrix[i][j] << ' ';
 		std::cout << std::endl;
 	}
 }
 
-void DestroyMat(const int size, double **matrix)
+void SquareMatrix::Transpose()
 {
-	for (int i = 0; i < size; i++)
+	SquareMatrix Matrix = *this;
+	for (size_t i = 0; i < size; i++)
+		for (size_t j = 0; j < size; j++)
+			matrix[i][j] = Matrix.matrix[j][i];
+}
+
+SquareMatrix SquareMatrix::operator*= (const double number)
+{
+	for (size_t i = 0; i < size; i++)
+		for (size_t j = 0; j < size; j++)
+			matrix[i][j] *= number;
+	return *this;
+}
+
+double &SquareMatrix::operator() (size_t i, size_t j)
+{
+	return matrix[i][j];
+}
+
+SquareMatrix::~SquareMatrix()
+{
+	for (size_t i = 0; i < size; i++)
 		delete[] matrix[i];
 	delete[] matrix;
 }
 
-double **MatMinor(const int size, double **matrix, const int x, const int y)
+SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y)
 {
-	double **minor = new double *[size - 1];
-	for (int i = 0; i < size - 1; i++)
-		minor[i] = new double[size - 1];
+	size_t size = matrix.getSize();
+	SquareMatrix minor(size - 1);
 	
-	int minorI = 0;
-	for (int i = 0; i < size; i++)
+	size_t minorI = 0;
+	for (size_t i = 0; i < size; i++)
 	{
-		int minorJ = 0;
+		size_t minorJ = 0;
 		if (i != x)
 		{
-			for (int j = 0; j < size; j++)
+			for (size_t j = 0; j < size; j++)
 				if (j != y)
 				{
-					minor[minorI][minorJ] = matrix[i][j];
+					minor(minorI, minorJ) = matrix(i, j);
 					minorJ++;
 				}
 			minorI++;
@@ -57,96 +125,115 @@ double **MatMinor(const int size, double **matrix, const int x, const int y)
 	return minor;
 }
 
-double MatDet(const int size, double **matrix)
+double Determinant(SquareMatrix &matrix)
 {
+	size_t size = matrix.getSize();
 	if (size == 1)
-		return matrix[0][0];
+		return matrix(0, 0);
 	double det = 0;
 	double norm = 1.f;
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		double **minor = MatMinor(size, matrix, 0, i);
-		det += norm * matrix[0][i] * MatDet(size - 1, minor);
-		DestroyMat(size - 1, minor);
+		SquareMatrix minor = Minor(matrix, 0, i);
+		det += norm * matrix(0, i) * Determinant(minor);
 		norm = -norm;
 	}
 	return det;
 }
 
-double **AdditionMat(const int size, double **matrix)
+SquareMatrix AdditionMatrix(SquareMatrix &matrix)
 {
-	double **additionMat = new double *[size];
-	for (int i = 0; i < size; i++)
-		additionMat[i] = new double[size];
+	size_t size = matrix.getSize();
+	SquareMatrix addMat(size);
 
-	double coef = -1.0;
-	for (int i = 0; i < size; i++)
-		for (int j = 0; j < size; j++)
+	double coef;
+	for (size_t i = 0; i < size; i++)
+		for (size_t j = 0; j < size; j++)
 		{
-			coef = -coef;
-			double **minor = MatMinor(size, matrix, i, j);
-			additionMat[i][j] = coef * MatDet(size - 1, minor);
-			DestroyMat(size - 1, minor);
+			coef = (i + j) % 2 ? 1.0 : -1.0;
+			SquareMatrix minor = Minor(matrix, i, j);
+			addMat(i, j) = coef * Determinant(minor);
 		}
 	
-	return additionMat;
+	return addMat;
 }
 
-void PrintTransposedMat(const int size, double **matrix)
+int IntSqrt(int number)
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0, iSqr = 0; iSqr <= number; i++, iSqr = i * i)
+		if (iSqr == number)
+			return i;
+	return 0;
+}
+
+int ElementsCount(std::ifstream &fin)
+{
+	int count = 0;
+	for (count; !fin.eof();)
 	{
-		for (int j = 0; j < size; j++)
-			std::cout << std::fixed << std::setprecision(3) << matrix[j][i] << ' ';
-		std::cout << std::endl;
+		double t;
+		if (fin >> t)
+			count++;
+		else
+			return 0;
 	}
+	return count;
 }
 
-void MultOnConst(const int size, double **matrix, const double number)
-{
-	for (int i = 0; i < size; i++)
-		for (int j = 0; j < size; j++)
-			matrix[i][j] *= number;
-}
 
 int main(int argc, char *argv[])
 {
-	if (argc != 1)
+	if (argc != 2)
 	{
-		std::cout << "invalid input format" << std::endl;
+		std::cout << "invalid parameters-format" << std::endl;
+		std::cout << "enter <file-name>" << std::endl;
 		return 1;
 	}
-	std::ifstream fin(/*argv[1]*/"matrix.txt", std::ios_base::in);
+	std::ifstream fin(argv[1], std::ios_base::in);
 
 	if (!fin.is_open())
 	{
-		std::cout << "file can't be opened";
+		std::cout << "file can't be opened" << std::endl;
 		return 2;
 	}
 
-	double **initMatrix = new double *[SIZE];
-	for (int i = 0; i < SIZE; i++)
-		initMatrix[i] = new double[SIZE];
+	int count = ElementsCount(fin);
+	if (!count)
+	{
+		std::cout << "invalid file-format" << std::endl;
+		return 3;
+	}
 
-	ReadMatrix(initMatrix, fin, SIZE);
+	int size = IntSqrt(count);
+	if (!size)
+	{
+		std::cout << "invaild matrix-format" << std::endl;
+		return 4;
+	}
+	fin.close();
 
-	double det = MatDet(SIZE, initMatrix);
+	fin.open(argv[1], std::ios_base::in);
+
+	SquareMatrix initMatrix(size);
+	initMatrix.ReadFromFile(fin);
+	initMatrix.Print();
+	std::cout << std::endl;
+
+
+	double det = Determinant(initMatrix);
 	if (!det)
 	{
-		std::cout << "the determinant of the matrix equils 0" << std::endl;
-		DestroyMat(SIZE, initMatrix);
+		std::cout << "the determinant is 0" << std::endl;
 		return 0;
 	}
 
-	double **addMatrix = AdditionMat(SIZE, initMatrix);
-	MultOnConst(SIZE, addMatrix, 1 / abs(det));
+	SquareMatrix addMatrix = AdditionMatrix(initMatrix);
+	addMatrix *= (1 / abs(det));
 
-	PrintMatrix(initMatrix, SIZE);
+	addMatrix.Transpose();
+	addMatrix.Print();
 	std::cout << std::endl;
-	PrintTransposedMat(SIZE, addMatrix);
 
-	DestroyMat(SIZE, initMatrix);
-	DestroyMat(SIZE, addMatrix);
 
     return 0;
 }

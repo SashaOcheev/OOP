@@ -12,7 +12,6 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-#include <vld.h>
 
 
 
