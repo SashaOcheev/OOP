@@ -187,14 +187,14 @@ int InputFilePreview(std::string fileName, size_t &size)
 	int count = CountUpItems(fin);
 	if (!count)
 	{
-		std::cout << "invalid file-format" << std::endl;
+		std::cout << "invalid file format" << std::endl;
 		return 3;
 	}
 
 	size = size_t(IntSqrt(count));
 	if (!size)
 	{
-		std::cout << "invaild matrix-format" << std::endl;
+		std::cout << "invaild matrix format" << std::endl;
 		return 4;
 	}
 
@@ -206,8 +206,8 @@ int main(int argc, char *argv[])
 {
 	if (argc != 2)
 	{
-		std::cout << "invalid parameters-format" << std::endl;
-		std::cout << "enter <file-name>" << std::endl;
+		std::cout << "invalid parameters format" << std::endl;
+		std::cout << "enter <file name>" << std::endl;
 		return 1;
 	}
 
