@@ -12,7 +12,7 @@ struct SquareMatrix
 
 	SquareMatrix(size_t Size);
 	SquareMatrix(const SquareMatrix &SquareMatrix);
-	size_t getSize();
+	size_t GetSize();
 	void ReadFromFile(std::ifstream &fin);
 	void Print();
 	void Transpose();
@@ -25,7 +25,8 @@ SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y);
 double Determinant(SquareMatrix &matrix);
 SquareMatrix AdditionMatrix(SquareMatrix &matrix);
 int IntSqrt(int number);
-int ElementsCount(std::ifstream &fin);
+int CountUpItems(std::ifstream &fin);
+int InputFilePreview(std::string fileName, size_t &size);
 
 
 SquareMatrix::SquareMatrix(size_t Size)
@@ -48,7 +49,7 @@ SquareMatrix::SquareMatrix(const SquareMatrix &Matrix)
 	}
 }
 
-size_t SquareMatrix::getSize()
+size_t SquareMatrix::GetSize()
 {
 	return size;
 }
@@ -104,16 +105,13 @@ SquareMatrix::~SquareMatrix()
 
 SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y)
 {
-	size_t size = matrix.getSize();
+	size_t size = matrix.GetSize();
 	SquareMatrix minor(size - 1);
 	
-	size_t minorI = 0;
-	for (size_t i = 0; i < size; i++)
-	{
-		size_t minorJ = 0;
+	for (size_t i = 0, minorI = 0; i < size; i++)
 		if (i != x)
 		{
-			for (size_t j = 0; j < size; j++)
+			for (size_t j = 0, minorJ = 0; j < size; j++)
 				if (j != y)
 				{
 					minor(minorI, minorJ) = matrix(i, j);
@@ -121,40 +119,36 @@ SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y)
 				}
 			minorI++;
 		}
-	}
 	return minor;
 }
 
 double Determinant(SquareMatrix &matrix)
 {
-	size_t size = matrix.getSize();
+	size_t size = matrix.GetSize();
 	if (size == 1)
 		return matrix(0, 0);
 	double det = 0;
-	double norm = 1.f;
-	for (size_t i = 0; i < size; i++)
+	for (size_t j = 0; j < size; j++)
 	{
-		SquareMatrix minor = Minor(matrix, 0, i);
-		det += norm * matrix(0, i) * Determinant(minor);
-		norm = -norm;
+		double coef = (0 + j) % 2 == 0 ? 1.0 : -1.0;
+		det += coef * matrix(0, j) * Determinant(Minor(matrix, 0, j));
 	}
 	return det;
 }
 
 SquareMatrix AdditionMatrix(SquareMatrix &matrix)
 {
-	size_t size = matrix.getSize();
+	size_t size = matrix.GetSize();
 	SquareMatrix addMat(size);
-
-	double coef;
 	for (size_t i = 0; i < size; i++)
 		for (size_t j = 0; j < size; j++)
-		{
-			coef = (i + j) % 2 ? 1.0 : -1.0;
-			SquareMatrix minor = Minor(matrix, i, j);
-			addMat(i, j) = coef * Determinant(minor);
-		}
-	
+			addMat(i, j) = Determinant(Minor(matrix, i, j));
+	if (size == 1)
+		addMat(0, 0) = 1;
+	for (size_t i = 0; i < size; i++)
+		for (size_t j = 0; j < size; j++)
+			addMat(i, j) *= (i + j) % 2 == 0 ? 1.0 : -1.0;
+
 	return addMat;
 }
 
@@ -166,7 +160,7 @@ int IntSqrt(int number)
 	return 0;
 }
 
-int ElementsCount(std::ifstream &fin)
+int CountUpItems(std::ifstream &fin)
 {
 	int count = 0;
 	for (count; !fin.eof();)
@@ -180,6 +174,33 @@ int ElementsCount(std::ifstream &fin)
 	return count;
 }
 
+int InputFilePreview(std::string fileName, size_t &size)
+{
+	std::ifstream fin(fileName, std::ios_base::in);
+
+	if (!fin.is_open())
+	{
+		std::cout << "file can't be opened" << std::endl;
+		return 2;
+	}
+
+	int count = CountUpItems(fin);
+	if (!count)
+	{
+		std::cout << "invalid file-format" << std::endl;
+		return 3;
+	}
+
+	size = size_t(IntSqrt(count));
+	if (!size)
+	{
+		std::cout << "invaild matrix-format" << std::endl;
+		return 4;
+	}
+
+	return 0;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -189,36 +210,16 @@ int main(int argc, char *argv[])
 		std::cout << "enter <file-name>" << std::endl;
 		return 1;
 	}
-	std::ifstream fin(argv[1], std::ios_base::in);
 
-	if (!fin.is_open())
-	{
-		std::cout << "file can't be opened" << std::endl;
-		return 2;
-	}
+	size_t size = 0;
+	int errorCode = InputFilePreview(argv[1], size);
+	if (errorCode)
+		return errorCode;
 
-	int count = ElementsCount(fin);
-	if (!count)
-	{
-		std::cout << "invalid file-format" << std::endl;
-		return 3;
-	}
-
-	int size = IntSqrt(count);
-	if (!size)
-	{
-		std::cout << "invaild matrix-format" << std::endl;
-		return 4;
-	}
-	fin.close();
-
-	fin.open(argv[1], std::ios_base::in);
+	std::ifstream inputFile(argv[1], std::ios_base::in);
 
 	SquareMatrix initMatrix(size);
-	initMatrix.ReadFromFile(fin);
-	initMatrix.Print();
-	std::cout << std::endl;
-
+	initMatrix.ReadFromFile(inputFile);
 
 	double det = Determinant(initMatrix);
 	if (!det)
@@ -228,12 +229,9 @@ int main(int argc, char *argv[])
 	}
 
 	SquareMatrix addMatrix = AdditionMatrix(initMatrix);
-	addMatrix *= (1 / abs(det));
-
+	addMatrix *= (1 / det);
 	addMatrix.Transpose();
 	addMatrix.Print();
-	std::cout << std::endl;
-
 
     return 0;
 }
