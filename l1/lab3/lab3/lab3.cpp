@@ -168,8 +168,6 @@ int CountUpItems(std::ifstream &fin)
 		double t;
 		if (fin >> t)
 			count++;
-		else
-			return 0;
 	}
 	return count;
 }
