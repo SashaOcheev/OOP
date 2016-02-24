@@ -9,11 +9,13 @@
 
 #include <stdio.h>
 #include <tchar.h>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <vld.h>
 #include <string>
-#include <vector>
-#include <algorithm>
+#include <valarray>
+
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
