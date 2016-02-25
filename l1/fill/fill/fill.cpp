@@ -90,7 +90,8 @@ struct Field
 		{
 			Coor cell = m_queue.front();
 			m_queue.pop();
-			m_matrix[cell.x()][cell.y()] = '.';
+			if (m_matrix[cell.x()][cell.y()] != 'O')
+				m_matrix[cell.x()][cell.y()] = '.';
 			AddCoorToQueue(cell + Coor(-1, 0));
 			AddCoorToQueue(cell + Coor(1, 0));
 			AddCoorToQueue(cell + Coor(0, 1));
