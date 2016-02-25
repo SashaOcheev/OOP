@@ -10,7 +10,6 @@ void ReplaceSubstringInFile(const std::string searchString, const std::string re
 	while (inputFile.get(tempChar))
 	{
 		tempString += tempChar;
-
 		if (searchString.empty() || tempString.back() != searchString[tempString.length() - 1])
 		{
 			while (!tempString.empty() && tempString.back() != searchString[tempString.length() - 1])
