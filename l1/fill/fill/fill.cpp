@@ -38,9 +38,9 @@ struct Coor
 		return { cell.x() + m_x, cell.y() + m_y };
 	}
 
-	bool IsInBound(Coor leftUpBound, Coor rightDownBound)
+	bool IsInBound(Coor leftUp, Coor rightDown)
 	{
-		return m_x >= leftUpBound.x() && m_y >= leftUpBound.y() && m_x < rightDownBound.x() && m_y < rightDownBound.y();
+		return m_x >= leftUp.x() && m_y >= leftUp.y() && m_x < rightDown.x() && m_y < rightDown.y();
 	}
 };
 
@@ -49,7 +49,7 @@ struct Field
 	matrix m_matrix;
 	size_t m_maxSize;
 	int m_errorCode;
-	std::queue <Coor> m_queue;
+	std::queue <Coor> m_wave;
 
 	Field(size_t maxSize)
 	{
@@ -67,31 +67,35 @@ struct Field
 		}
 
 		std::string str;
-		for (size_t i = 0; i < m_maxSize && std::getline(inputFile, str); i++)
+		while (std::getline(inputFile, str) && m_matrix.size() < m_maxSize)
 		{
-			if (str.size() > m_maxSize)
+			if (str.length() > m_maxSize)
 				str.erase(m_maxSize);
+			else if (str.length() < m_maxSize)//delete this lines if you want to save
+				str.append(m_maxSize - str.length(), ' ');//source string sizes
 			m_matrix.push_back(str);
 			for (size_t i = 0; i < str.size(); i++)
 				if (str[i] == 'O')
-					m_queue.push({ m_matrix.size() - 1, i });
+					m_wave.push({ m_matrix.size() - 1, i });
 		}
 	}
 
 	void AddCoorToQueue(Coor cell)
 	{
-		if (cell.IsInBound({ 0, 0 }, { m_matrix.size(), m_matrix[cell.x()].size()}) && m_matrix[cell.x()][cell.y()] == ' ')
-			m_queue.push(cell);
+		if (cell.x() < m_matrix.size())
+			if (cell.IsInBound({ 0, 0 }, { m_matrix.size(), m_matrix[cell.x()].size() }) && m_matrix[cell.x()][cell.y()] == ' ')
+			{
+				m_matrix[cell.x()][cell.y()] = '.';
+				m_wave.push(cell);
+			}
 	}
 
 	void FillMatrix()
 	{
-		while (!m_queue.empty())
+		while (!m_wave.empty())
 		{
-			Coor cell = m_queue.front();
-			m_queue.pop();
-			if (m_matrix[cell.x()][cell.y()] != 'O')
-				m_matrix[cell.x()][cell.y()] = '.';
+			Coor cell = m_wave.front();
+			m_wave.pop();
 			AddCoorToQueue(cell + Coor(-1, 0));
 			AddCoorToQueue(cell + Coor(1, 0));
 			AddCoorToQueue(cell + Coor(0, 1));
