@@ -95,7 +95,7 @@ std::string ConvertNumberToOtherRadixInString(std::string numberInString, int so
 		break;
 	}
 
-	std::vector<int> digits = StringToDigitsVector({ numberInString.begin() + countOfValidPreNumberSymbols, numberInString.end() }, sourceNotation);
+	std::vector<int> digits = StringToDigitsVector(numberInString.substr(countOfValidPreNumberSymbols), sourceNotation);
 	if (digits.empty())
 		return "";
 
