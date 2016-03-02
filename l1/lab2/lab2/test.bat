@@ -10,6 +10,10 @@ REM one of the parameters exceed the allowed notation
 lab2.exe 2 37 1010
 IF NOT ERRORLEVEL 2 GOTO err
 
+REM one of the parameters exceed int
+lab2.exe 254354657658678 32 1010
+IF NOT ERRORLEVEL 2 GOTO err
+
 REM number exceed the allowed notation
 lab2.exe 2 10 1012
 IF NOT ERRORLEVEL 3 GOTO err
@@ -18,6 +22,12 @@ REM run program
 lab2.exe 2 10 1011 > output.txt
 IF NOT ERRORLEVEL 0 GOTO err
 FC /B output.txt 1011.txt
+IF ERRORLEVEL 1 GOTO err
+
+REM number is 0
+lab2.exe 5 12 0 > output.txt
+IF NOT ERRORLEVEL 0 GOTO err
+FC /B output.txt 0.txt
 IF ERRORLEVEL 1 GOTO err
 
 REM run program

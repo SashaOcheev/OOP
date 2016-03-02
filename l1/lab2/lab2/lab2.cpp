@@ -6,7 +6,7 @@
 static const int MIN_RADIX = 2;
 static const int MAX_RADIX = 36;
 
-std::vector<int> StringToDigitsVector(std::string stringNumber, int radix)
+std::vector<int> StringToDigitsVector(const std::string &stringNumber, int radix)
 {
 	std::vector<int> digitsInDec;
 	for (char ch : stringNumber)
@@ -27,7 +27,7 @@ std::vector<int> StringToDigitsVector(std::string stringNumber, int radix)
 	return digitsInDec;
 }
 
-std::string IntToString(std::vector<int> digitsInDec)
+std::string IntToString(const std::vector<int> &digitsInDec)
 {
 	std::string digitsString;
 	for (int digit : digitsInDec)
@@ -40,53 +40,76 @@ std::string IntToString(std::vector<int> digitsInDec)
 	return digitsString;
 }
 
-int DivideOnRadix(std::vector<int> &digitsInDec, const int sourceNotation, const int destinationNotation)
+struct DivisionResult
 {
-	std::vector<int> result;
-	int temp = 0;
-	bool wasNot0 = false;
-	for (int digit : digitsInDec)
+	std::vector <int> integerPart;
+	int remaind;
+};
+
+DivisionResult DivideNumberOfSourceNotation(const std::vector<int> &digits, int sourceNotation, int divider)
+{
+	DivisionResult currentResult;
+	currentResult.remaind = 0;
+	bool isIntegerPartNot0 = false;
+	for (int digit : digits)
 	{
-		if (wasNot0 || (temp + digit) / destinationNotation)
+		int integerPart = (currentResult.remaind + digit) / divider;
+		if (isIntegerPartNot0 || integerPart)
 		{
-			result.push_back((temp + digit) / destinationNotation);
-			wasNot0 = true;
+			currentResult.integerPart.push_back(integerPart);
+			isIntegerPartNot0 = true;
 		}
-		temp = (temp + digit) % destinationNotation * sourceNotation;
+		currentResult.remaind = (currentResult.remaind + digit) % divider * sourceNotation;
 	}
-	digitsInDec = result;
-	return temp / sourceNotation;
+	currentResult.remaind /= sourceNotation;
+	return currentResult;
 }
 
-std::vector<int> ConvertToOtherRadix(std::vector<int> digitsInDec, const int sourceNotation, const int destinationNotation)
+std::vector<int> ConvertToOtherRadix(const std::vector<int> &digits, int sourceNotation, int destinationNotation)
 {
 	std::vector<int> result;
-	while (!digitsInDec.empty())
-		result.push_back(DivideOnRadix(digitsInDec, sourceNotation, destinationNotation));
-	std::reverse(result.begin(), result.end());
-	return result;
+	DivisionResult currentResultOfDivision = { digits, 0 };
+	while (!currentResultOfDivision.integerPart.empty())
+	{
+		currentResultOfDivision = DivideNumberOfSourceNotation(currentResultOfDivision.integerPart, sourceNotation, destinationNotation);
+		result.push_back(currentResultOfDivision.remaind);
+	}
+	return{ result.rbegin(), result.rend() };
 }
 
-std::string ConvertNumberToOtherRadixInString(std::string numberInString, const int sourceNotation, const int destinationNotation)
+std::string ConvertNumberToOtherRadixInString(std::string numberInString, int sourceNotation, int destinationNotation)
 {
+	if (numberInString.empty())
+		return "";
+
+	int countOfValidPreNumberSymbols = 0; // 1/0;
 	std::string sign = "";
 	switch (numberInString.front())
 	{
 	case '-':
 		sign = "-";
-		numberInString.erase(numberInString.begin());
+		countOfValidPreNumberSymbols = 1;
 		break;
 	case '+':
-		numberInString.erase(numberInString.begin());
+		countOfValidPreNumberSymbols = 1;
 		break;
 	}
 
-	std::vector<int> digitsInDec = StringToDigitsVector(numberInString, sourceNotation);
-	if (digitsInDec.empty())
+	std::vector<int> digits = StringToDigitsVector(numberInString.substr(countOfValidPreNumberSymbols), sourceNotation);
+	if (digits.empty())
 		return "";
 
-	std::vector<int> convertedNumber = ConvertToOtherRadix(digitsInDec, sourceNotation, destinationNotation);
+	std::vector<int> convertedNumber = ConvertToOtherRadix(digits, sourceNotation, destinationNotation);
 	return sign + IntToString(convertedNumber);
+}
+
+bool isValidNotation(const char radixInString[], int minRadix, int maxRadix)
+{
+	int radix = 0;
+	radix = atoi(radixInString);
+	if (!radix)
+		return false;
+	return radix >= minRadix && radix <= maxRadix;
 }
 
 int main(int argc, char *argv[])
@@ -98,17 +121,16 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
-	int sourceNotation;
-	int destinationNotation;
-	bool wasNotError = (sourceNotation = atoi(argv[1])) && (destinationNotation = atoi(argv[2]));
-	wasNotError = wasNotError && sourceNotation >= MIN_RADIX && sourceNotation <= MAX_RADIX &&
-		destinationNotation >= MIN_RADIX && destinationNotation <= MAX_RADIX;
+	bool wasNotError = isValidNotation(argv[1], MIN_RADIX, MAX_RADIX) && isValidNotation(argv[2], MIN_RADIX, MAX_RADIX);
 	if (!wasNotError)
 	{
 		std::cout << "invalid notations format" << std::endl;
-		std::cout << "enter 2 =< notation <= 36" << std::endl;
+		std::cout << "enter 2 <= notation <= 36" << std::endl;
 		return 2;
 	}
+	int sourceNotation = sourceNotation = atoi(argv[1]);
+	int destinationNotation = atoi(argv[2]);
+
 
 	std::string numberInString = ConvertNumberToOtherRadixInString(argv[3], sourceNotation, destinationNotation);
 	if (numberInString.empty())
