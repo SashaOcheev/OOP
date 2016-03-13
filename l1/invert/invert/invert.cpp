@@ -16,7 +16,6 @@ struct SquareMatrix
 	void Transpose();
 	SquareMatrix operator*= (const double number);
 	double &operator() (size_t i, size_t j);
-	~SquareMatrix();
 };
 
 SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y);
@@ -43,11 +42,7 @@ void SquareMatrix::ReadFromFile(std::ifstream &inputFile)
 {
 	for (size_t i = 0; i < m_matrix.size(); i++)
 		for (size_t j = 0; j < m_matrix[i].size(); j++)
-		{
-			double temp;
-			inputFile >> temp;
-			m_matrix[i][j] = temp;
-		}
+			inputFile >> m_matrix[i][j];
 }
 
 void SquareMatrix::Print()const
@@ -81,27 +76,26 @@ double &SquareMatrix::operator() (size_t i, size_t j)
 	return m_matrix[i][j];
 }
 
-SquareMatrix::~SquareMatrix()
-{
-
-}
-
 SquareMatrix Minor(SquareMatrix &matrix, const size_t x, const size_t y)
 {
 	size_t size = matrix.GetSize();
 	SquareMatrix minor(size - 1);
 
 	for (size_t i = 0, minorI = 0; i < size; i++)
+	{
 		if (i != x)
 		{
 			for (size_t j = 0, minorJ = 0; j < size; j++)
+			{
 				if (j != y)
 				{
 					minor(minorI, minorJ) = matrix(i, j);
 					minorJ++;
 				}
+			}
 			minorI++;
 		}
+	}
 	return minor;
 }
 
@@ -119,7 +113,7 @@ double Determinant(SquareMatrix &matrix)
 	return det;
 }
 
-SquareMatrix AdditionMatrix(SquareMatrix &matrix)
+SquareMatrix AdditionMatrix(const SquareMatrix &matrix)
 {
 	size_t size = matrix.GetSize();
 	SquareMatrix addMat(size);
