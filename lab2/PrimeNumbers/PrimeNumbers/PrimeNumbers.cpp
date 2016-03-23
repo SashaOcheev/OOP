@@ -3,14 +3,6 @@
 
 #include "stdafx.h"
 
-const int UPPER_BOUND = 100000000;
-
-bool IsValidBound(std::string const& stringNumber, int upperBound)
-{
-	int number = strtol(stringNumber.c_str(), nullptr, 10);
-	return number > 0 && number <= upperBound;
-}
-
 std::set<int> GeneratePrimeNumbersSet(int upperBound)
 {
 	std::set<int> primeNumbers;
@@ -27,7 +19,7 @@ std::set<int> GeneratePrimeNumbersSet(int upperBound)
 	return primeNumbers;
 }
 
-void PrintSetOfint(std::set<int> const& set, std::ostream &stream)
+void PrintSetOfInt(std::set<int> const& set, std::ostream &stream)
 {
 	std::copy(set.cbegin(), set.cend(), std::ostream_iterator<int>(stream, "\n"));
 }
@@ -40,15 +32,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if (!IsValidBound(argv[1], UPPER_BOUND))
-	{
-		std::cout << "0 < upper bound <= " << UPPER_BOUND << std::endl;
-		return 1;
-	}
-
-	auto bound = strtol(argv[1], nullptr, 10);
-	auto primeNumbers = GeneratePrimeNumbersSet(bound);
-	PrintSetOfint(primeNumbers, std::cout);
+	auto primeNumbers = GeneratePrimeNumbersSet(std::stoi(argv[1]));
+	PrintSetOfInt(primeNumbers, std::cout);
 
     return 0;
 }
