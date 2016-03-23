@@ -3,16 +3,22 @@
 
 #include "stdafx.h"
 
-void ReplaceSubstringInFile(const std::string searchString, const std::string replaceString, std::ifstream &inputFile, std::ofstream &outputFile)
+bool MayContainSearchString(std::string const& text, std::string const& searchString)
+{
+	return text.back() != searchString[text.length() - 1];
+}
+
+void ReplaceSubstringInFile(std::string const& searchString, std::string const& replaceString, std::ifstream &inputFile, std::ofstream &outputFile)
 {
 	std::string tempString;
+	tempString.reserve(searchString.size());
 	char tempChar;
 	while (inputFile.get(tempChar))
 	{
 		tempString += tempChar;
-		if (searchString.empty() || tempString.back() != searchString[tempString.length() - 1])
+		if (searchString.empty() || MayContainSearchString(tempString, searchString))
 		{
-			while (!tempString.empty() && tempString.back() != searchString[tempString.length() - 1])
+			while (!tempString.empty() && MayContainSearchString(tempString, searchString))
 			{
 				outputFile << tempString.front();
 				tempString.erase(tempString.begin());
