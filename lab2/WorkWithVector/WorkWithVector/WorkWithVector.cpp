@@ -3,26 +3,36 @@
 
 #include "stdafx.h"
 
-bool isDivided(double number, double divider)
+bool IsDoubleEqual(double n1, double n2, double precision = 0.001)
 {
-	return (number - int(number / divider) * divider == 0.0);
+	return abs(n1 - n2) < precision;
 }
 
-double AverageOfDivided(std::vector<double> const &numbers, double divider)
+bool IsDivided(double dividend, double divider, double precision = 0.001)
 {
-	double sum = 0.0;
-	int count = 0;
-	for (double number : numbers)
-	{
-		if (isDivided(number, divider))
-		{
-			sum += number;
-			count++;
-		}
-	}
-	if (count)
-		return sum / count;
-	return 0.0;
+	double res = dividend / divider;
+	return IsDoubleEqual(res , int(res), precision);
+}
+
+double ArrangeOfDividedByNumber(std::vector<double> const& numbers, double divider, double precision = 0.001)
+{
+	auto SumAndCountOfDividedByNumber = std::accumulate(numbers.cbegin(), numbers.cend(), std::make_pair<double, size_t>(0.0, 0),
+		[=](std::pair<double, size_t> current, double y)
+	{ return IsDivided(y, divider, precision) ? std::make_pair(current.first + y, current.second + 1) : current; });
+
+	return SumAndCountOfDividedByNumber.second ?
+		SumAndCountOfDividedByNumber.first / SumAndCountOfDividedByNumber.second : 0.0;
+}
+
+void Foo(std::vector<double> & numbers, double precision = 0.001)
+{
+	double n1 = 3.0;
+	double n2 = 2.0;
+
+	auto mean = ArrangeOfDividedByNumber(numbers, n1, precision);
+
+	std::for_each(numbers.begin(), numbers.end(),
+		[=](double &x) { if (IsDivided(x, n2, precision)) x *= mean; });
 }
 
 int main()
@@ -32,11 +42,11 @@ int main()
 	while (std::cin >> number)
 		numbers.push_back(number);
 
-	double mean = AverageOfDivided(numbers, 2);
-	std::replace_if(numbers.begin(), numbers.end(), [](double number) { return isDivided(number, 3); }, mean);
+	Foo(numbers, 0.001);
 
-	for (double number : numbers)
+	for (auto number : numbers)
 		std::cout << std::fixed << std::setprecision(3) << number << ' ';
+	std::cout << std::endl;
 
     return 0;
 }

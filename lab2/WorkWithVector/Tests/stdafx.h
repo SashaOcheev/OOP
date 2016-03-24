@@ -9,13 +9,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
-#include <vector>
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <numeric>
-#include <functional>
-#include <iterator>
-#include <ostream>
+
+
 
 // TODO: reference additional headers your program requires here
