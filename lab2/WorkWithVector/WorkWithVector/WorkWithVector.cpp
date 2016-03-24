@@ -2,8 +2,9 @@
 //
 
 #include "stdafx.h"
+#include "WorkWithVector.h"
 
-bool IsDoubleEqual(double n1, double n2, double precision = 0.001)
+bool IsEqualDouble(double n1, double n2, double precision = 0.001)
 {
 	return abs(n1 - n2) < precision;
 }
@@ -11,7 +12,7 @@ bool IsDoubleEqual(double n1, double n2, double precision = 0.001)
 bool IsDivided(double dividend, double divider, double precision = 0.001)
 {
 	double res = dividend / divider;
-	return IsDoubleEqual(res , int(res), precision);
+	return IsEqualDouble(res , int(res), precision);
 }
 
 double ArrangeOfDividedByNumber(std::vector<double> const& numbers, double divider, double precision = 0.001)
@@ -50,4 +51,3 @@ int main()
 
     return 0;
 }
-
