@@ -15,16 +15,17 @@ bool IsEqualDoubleVectors(std::vector<double> const& vec1, std::vector<double> c
 BOOST_AUTO_TEST_SUITE(isEqDoubleVectors)
 	BOOST_AUTO_TEST_CASE(isEqDouble)
 	{
-		BOOST_CHECK_EQUAL(IsEqualDouble(3.0, 3.0), true);
-		BOOST_CHECK_EQUAL(IsEqualDouble(3.0, 2.0), false);
+		BOOST_CHECK(IsEqualDouble(3.0, 3.0));
+		BOOST_CHECK(!IsEqualDouble(3.0, 2.0));
 	}
 
 	BOOST_AUTO_TEST_CASE(isEqVectors)
 	{
-		BOOST_CHECK_EQUAL(IsEqualDoubleVectors({ 1, 2, 3 }, { 1, 2, 3 }), true);
-		BOOST_CHECK_EQUAL(IsEqualDoubleVectors({ 1, 2, 3 }, { 1, 3, 2 }), false);
-		BOOST_CHECK_EQUAL(IsEqualDoubleVectors({ 1, 2, 3 }, { 1, 2 }), false);
-		BOOST_CHECK_EQUAL(IsEqualDoubleVectors({ }, { 1, 2 }), false);
+		BOOST_CHECK(IsEqualDoubleVectors({ 1, 2, 3 }, { 1, 2, 3 }));
+		BOOST_CHECK(IsEqualDoubleVectors({}, {}));
+		BOOST_CHECK(!IsEqualDoubleVectors({ 1, 2, 3 }, { 1, 3, 2 }));
+		BOOST_CHECK(!IsEqualDoubleVectors({ 1, 2, 3 }, { 1, 2 }));
+		BOOST_CHECK(!IsEqualDoubleVectors({}, { 1, 2 }));
 	}
 BOOST_AUTO_TEST_SUITE_END()
 
