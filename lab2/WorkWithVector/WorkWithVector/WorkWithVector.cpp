@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "WorkWithVector.h"
 
-bool IsEqualDouble(double n1, double n2, double precision = 0.001)
+bool IsEqualDouble(double n1, double n2, double precision)
 {
 	return abs(n1 - n2) < precision;
 }
@@ -25,23 +25,24 @@ double ArrangeOfDividedByNumber(std::vector<double> const& numbers, double divid
 		SumAndCountOfDividedByNumber.first / SumAndCountOfDividedByNumber.second : 0.0;
 }
 
-void Foo(std::vector<double> & numbers, double precision = 0.001)
+void Foo(std::vector<double> & numbers, double precision)
 {
 	double n1 = 3.0;
 	double n2 = 2.0;
 
-	auto mean = ArrangeOfDividedByNumber(numbers, n1, precision);
+	auto mean = ArrangeOfDividedByNumber(numbers, n2, precision);
 
 	std::for_each(numbers.begin(), numbers.end(),
-		[=](double &x) { if (IsDivided(x, n2, precision)) x *= mean; });
+		[=](double &x) { if (IsDivided(x, n1, precision)) x *= mean; });
 }
 
 int main()
 {
 	std::vector<double> numbers;
-	double number;
-	while (std::cin >> number)
-		numbers.push_back(number);
+	
+	std::copy(std::istream_iterator<double>(std::cin),
+		std::istream_iterator<double>(),
+		std::back_inserter(numbers));
 
 	Foo(numbers, 0.001);
 
