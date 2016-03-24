@@ -36,7 +36,7 @@ void Foo(std::vector<double> & numbers, double precision)
 		[=](double &x) { if (IsDivided(x, n1, precision)) x *= mean; });
 }
 
-int main()
+/*int main()
 {
 	std::vector<double> numbers;
 	
@@ -51,4 +51,4 @@ int main()
 	std::cout << std::endl;
 
     return 0;
-}
+}*/
