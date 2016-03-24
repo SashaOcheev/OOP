@@ -33,21 +33,21 @@ BOOST_AUTO_TEST_SUITE(FooTest)
 	BOOST_AUTO_TEST_CASE(WithoutDividedBy3)
 	{
 		std::vector<double> numbers = { 1, 2, 2, 4, 5 };
-		Foo(numbers);
+		ProcessVector(numbers);
 		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 2, 2, 4, 5 }));
 	}
 
 	BOOST_AUTO_TEST_CASE(WithoutDividedBy2)
 	{
 		std::vector<double> numbers = { 1, 3, 9, 7, 5, 15 };
-		Foo(numbers);
+		ProcessVector(numbers);
 		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 0, 0, 7, 5, 0 }));
 	}
 
 	BOOST_AUTO_TEST_CASE(NormalTest)
 	{
 		std::vector<double> numbers = { 1, 2, 3, 4, 5, 6 };
-		Foo(numbers);
+		ProcessVector(numbers);
 		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 2, 12, 4, 5, 24 }));
 	}
 BOOST_AUTO_TEST_SUITE_END()
