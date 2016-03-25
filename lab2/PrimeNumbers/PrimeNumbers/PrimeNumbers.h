@@ -1,10 +1,10 @@
 #pragma once
 
-#include <set>
 #include <iostream>
+#include <fstream>
+#include <set>
 #include <vector>
 #include <iterator>
-#include <fstream>
 #include <string>
 
 std::set<int> GeneratePrimeNumbersSet(int upperBound);
