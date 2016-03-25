@@ -48,3 +48,8 @@ void ProcessVector(std::vector<double> & numbers, double precision)
 				x *= mean;
 		});
 }
+
+void SortVectorOfDoubles(std::vector<double> & numbers)
+{
+	std::sort(numbers.begin(), numbers.end());
+}

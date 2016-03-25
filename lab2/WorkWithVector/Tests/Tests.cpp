@@ -30,25 +30,29 @@ BOOST_AUTO_TEST_SUITE(IsEqualDoubleVectors_test)
 BOOST_AUTO_TEST_SUITE_END()
 
 
+
 BOOST_AUTO_TEST_SUITE(ProcessVector_test)
 	BOOST_AUTO_TEST_CASE(without_divided_by_3)
 	{
 		std::vector<double> numbers = { 1, 2, 2, 4, 5 };
 		ProcessVector(numbers);
+		SortVectorOfDoubles(numbers);
 		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 2, 2, 4, 5 }));
 	}
 
 	BOOST_AUTO_TEST_CASE(without_divided_by_2)
 	{
-		std::vector<double> numbers = { 1, 3, 9, 7, 5, 15 };
+		std::vector<double> numbers = { 1, 15, 9, 7, 5, 3 };
 		ProcessVector(numbers);
-		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 0, 0, 7, 5, 0 }));
+		SortVectorOfDoubles(numbers);
+		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 0, 0, 0, 1, 5, 7 }));
 	}
 
 	BOOST_AUTO_TEST_CASE(normal_test)
 	{
-		std::vector<double> numbers = { 1, 2, 3, 4, 5, 6 };
+		std::vector<double> numbers = { 6, 2, 5, 4, 3, 1 };
 		ProcessVector(numbers);
-		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 2, 12, 4, 5, 24 }));
+		SortVectorOfDoubles(numbers);
+		BOOST_CHECK(IsEqualDoubleVectors(numbers, { 1, 2, 4, 5, 12, 24 }));
 	}
 BOOST_AUTO_TEST_SUITE_END()

@@ -10,6 +10,8 @@ int main()
 	std::back_inserter(numbers));
 
 	ProcessVector(numbers, 0.001);
+	SortVectorOfDoubles(numbers);
+
 
 	for (auto number : numbers)
 		std::cout << std::fixed << std::setprecision(3) << number << ' ';
