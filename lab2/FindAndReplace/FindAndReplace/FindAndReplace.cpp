@@ -17,8 +17,9 @@ std::string FindAndReplace(std::string const& subject, std::string const& search
 		{
 			resString.replace(startForSearch, search.length(), replace);
 			startForSearch += replace.length();
-			return resString;
 		}
+		else
+			return resString;
 	}
 }
 

@@ -17,9 +17,5 @@ int main(int argc, char *argv[])
 	std::cout << std::endl;
 	std::cout << FindAndReplace(str, argv[1], argv[2]) << std::endl;
 
-	std::cout << FindAndReplace("12312312345", "1231234", "Ayo, mafaka, bounce!") << std::endl;
-	std::cout << FindAndReplace("mamampapa", "ma", "Ayo, mafaka, bounce!") << std::endl;
-	std::cout << FindAndReplace("mamampapa", "", "Ayo, mafaka, bounce!") << std::endl;
-
 	return 0;
 }
