@@ -7,7 +7,7 @@ int main()
 	std::string str;
 	std::getline(std::cin, str);
 	AddWordsFromStringToCStringsCount(str, wordsCount);
-
 	wordsCount.PutToOutStream(std::cout);
+
 	return 0;
 }

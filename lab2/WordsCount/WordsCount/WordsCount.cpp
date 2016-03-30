@@ -14,6 +14,11 @@ std::map<std::string, size_t>::iterator CStringsCount::End()
 	return m_map.end();
 }
 
+void CStringsCount::Clear()
+{
+	m_map.clear();
+}
+
 void CStringsCount::IncOrAdd(std::string word)
 {
 	m_map[word]++;

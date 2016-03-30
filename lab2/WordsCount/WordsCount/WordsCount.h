@@ -14,6 +14,7 @@ public:
 	
 	std::map<std::string, size_t>::iterator Begin();
 	std::map<std::string, size_t>::iterator End();
+	void Clear();
 
 	void IncOrAdd(std::string word);
 	void PutToOutStream(std::ostream & stream, std::string const& delimBeneathPairMembers = " - ", std::string const& delimBeneathMapMembers = "\n") const;
