@@ -2,42 +2,42 @@
 //
 
 #include "stdafx.h"
-#include <iostream>
-#include <map>
-#include <algorithm>
-#include <string>
-#include <iterator>
+#include "WordsCount.h"
 
-class CWordCount
+std::map<std::string, size_t>::iterator CStringsCount::Begin()
 {
-public:
-	CWordCount() = default;
+	return m_map.begin();
+}
 
-	void IncOrAdd(std::string word);
-	void PutToStream(std::ostream & stream, std::string const& delimBeneathPairMembers = " - ", std::string const& delimBeneathMapMembers = "\n") const;
+std::map<std::string, size_t>::iterator CStringsCount::End()
+{
+	return m_map.end();
+}
 
-private:
-	std::map<std::string, size_t> m_map;
-};
-
-void CWordCount::IncOrAdd(std::string word)
+void CStringsCount::IncOrAdd(std::string word)
 {
 	m_map[word]++;
 }
 
-void CWordCount::PutToStream(std::ostream & stream, std::string const& delimBeneathPairMembers, std::string const& delimBeneathMapMembers) const
+void CStringsCount::PutToOutStream(std::ostream & stream, std::string const& delimBeneathPairMembers, std::string const& delimBeneathMapMembers) const
 {
 	for (auto it = m_map.cbegin(); it != m_map.cend(); it++)
 		stream << it->first << delimBeneathPairMembers << it->second << delimBeneathMapMembers;
 }
 
-int main()
+void AddWordsFromStringToCStringsCount(std::string const& str, CStringsCount &wordsCount)
 {
-	CWordCount wordCount;
-	wordCount.IncOrAdd("abc");
-	wordCount.IncOrAdd("de");
-	wordCount.IncOrAdd("abc");
-	wordCount.PutToStream(std::cout);
-    return 0;
+	std::string notAllowedChars = " \n\t";
+
+	size_t allowedCharPos = 0;
+	size_t notAllowedCharPos = 0;
+	while (notAllowedCharPos < str.length())
+	{
+		allowedCharPos = str.find_first_not_of(notAllowedChars, notAllowedCharPos);
+		notAllowedCharPos = str.find_first_of(notAllowedChars, allowedCharPos);
+		if (allowedCharPos < str.length())
+			wordsCount.IncOrAdd(str.substr(allowedCharPos, notAllowedCharPos - allowedCharPos));
+	}
 }
+
 
