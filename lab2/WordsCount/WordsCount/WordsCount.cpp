@@ -36,11 +36,11 @@ void AddWordsFromStringToCStringsCount(std::string const& str, CStringsCount &wo
 
 	size_t allowedCharPos = 0;
 	size_t notAllowedCharPos = 0;
-	while (notAllowedCharPos < str.length())
+	while (notAllowedCharPos != std::string::npos)
 	{
 		allowedCharPos = str.find_first_not_of(notAllowedChars, notAllowedCharPos);
 		notAllowedCharPos = str.find_first_of(notAllowedChars, allowedCharPos);
-		if (allowedCharPos < str.length())
+		if (allowedCharPos != std::string::npos)
 			wordsCount.IncOrAdd(str.substr(allowedCharPos, notAllowedCharPos - allowedCharPos));
 	}
 }
