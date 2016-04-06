@@ -5,26 +5,26 @@
 #include <boost/test/output/compiler_log_formatter.hpp>
 #include "../WordsCount/WordsCount.h"
 
-typedef std::map<std::string, size_t> StringSizeTMap;
+typedef std::map<std::string, unsigned> StringSizeTMap;
 
-BOOST_AUTO_TEST_SUITE(AddWordsFromStringToCStringsCount_test)
+BOOST_AUTO_TEST_SUITE(AddWordsFromStringToStringsCountMap_test)
 
 	BOOST_AUTO_TEST_CASE(string_without_words)
 	{
 		StringSizeTMap emptyMap;
-		CStringsCount testStringCount;
-		AddWordsFromStringToCStringsCount("", testStringCount);
-		BOOST_CHECK(emptyMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
-		AddWordsFromStringToCStringsCount(" ", testStringCount);
-		BOOST_CHECK(emptyMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
-		AddWordsFromStringToCStringsCount("   ", testStringCount);
-		BOOST_CHECK(emptyMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
-		AddWordsFromStringToCStringsCount("\t", testStringCount);
-		BOOST_CHECK(emptyMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
-		AddWordsFromStringToCStringsCount("\t\t\t\t\t", testStringCount);
-		BOOST_CHECK(emptyMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
-		AddWordsFromStringToCStringsCount("   \t\t  \t \t", testStringCount);
-		BOOST_CHECK(emptyMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
+		StringSizeTMap testStringCount;
+		AddWordsFromStringToStringsCountMap("", testStringCount);
+		BOOST_CHECK(emptyMap == testStringCount);
+		AddWordsFromStringToStringsCountMap(" ", testStringCount);
+		BOOST_CHECK(emptyMap == testStringCount);
+		AddWordsFromStringToStringsCountMap("   ", testStringCount);
+		BOOST_CHECK(emptyMap == testStringCount);
+		AddWordsFromStringToStringsCountMap("\t", testStringCount);
+		BOOST_CHECK(emptyMap == testStringCount);
+		AddWordsFromStringToStringsCountMap("\t\t\t\t\t", testStringCount);
+		BOOST_CHECK(emptyMap == testStringCount);
+		AddWordsFromStringToStringsCountMap("   \t\t  \t \t", testStringCount);
+		BOOST_CHECK(emptyMap == testStringCount);
 	}
 
 	BOOST_AUTO_TEST_CASE(ordinary_string)
@@ -51,15 +51,15 @@ BOOST_AUTO_TEST_SUITE(AddWordsFromStringToCStringsCount_test)
 		};
 		std::string str = "white    light,\taww white light its gonna drive me insane ";
 		str.append("white heat, aww white \t\t heat it tickle me down to my toes");
-		CStringsCount testStringCount;
-		AddWordsFromStringToCStringsCount(str, testStringCount);
-		BOOST_CHECK(ethalonMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
+		StringSizeTMap testStringCount;
+		AddWordsFromStringToStringsCountMap(str, testStringCount);
+		BOOST_CHECK(ethalonMap == testStringCount);
 
-		testStringCount.Clear();
+		testStringCount.clear();
 		str = "   white    light,\taww white light its gonna drive me insane ";
 		str.append("white heat, aww white \t\t heat it tickle me down to my toes \t\t");
-		AddWordsFromStringToCStringsCount(str, testStringCount);
-		BOOST_CHECK(ethalonMap == StringSizeTMap(testStringCount.Begin(), testStringCount.End()));
+		AddWordsFromStringToStringsCountMap(str, testStringCount);
+		BOOST_CHECK(ethalonMap == testStringCount);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()

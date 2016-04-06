@@ -4,33 +4,14 @@
 #include "stdafx.h"
 #include "WordsCount.h"
 
-std::map<std::string, size_t>::iterator CStringsCount::Begin()
+void PutMapToOutStream(std::ostream & stream, std::map<std::string, unsigned> const& map,
+	std::string const& delimBeneathPairMembers, std::string const& delimBeneathMapMembers)
 {
-	return m_map.begin();
-}
-
-std::map<std::string, size_t>::iterator CStringsCount::End()
-{
-	return m_map.end();
-}
-
-void CStringsCount::Clear()
-{
-	m_map.clear();
-}
-
-void CStringsCount::IncOrAdd(std::string word)
-{
-	m_map[word]++;
-}
-
-void CStringsCount::PutToOutStream(std::ostream & stream, std::string const& delimBeneathPairMembers, std::string const& delimBeneathMapMembers) const
-{
-	for (auto it = m_map.cbegin(); it != m_map.cend(); it++)
+	for (auto it = map.cbegin(); it != map.cend(); it++)
 		stream << it->first << delimBeneathPairMembers << it->second << delimBeneathMapMembers;
 }
 
-void AddWordsFromStringToCStringsCount(std::string const& str, CStringsCount &wordsCount)
+void AddWordsFromStringToStringsCountMap(std::string const& str, std::map<std::string, unsigned> &wordsCount)
 {
 	std::string notAllowedChars = " \n\t";
 
@@ -41,7 +22,7 @@ void AddWordsFromStringToCStringsCount(std::string const& str, CStringsCount &wo
 		allowedCharPos = str.find_first_not_of(notAllowedChars, notAllowedCharPos);
 		notAllowedCharPos = str.find_first_of(notAllowedChars, allowedCharPos);
 		if (allowedCharPos != std::string::npos)
-			wordsCount.IncOrAdd(str.substr(allowedCharPos, notAllowedCharPos - allowedCharPos));
+			wordsCount[str.substr(allowedCharPos, notAllowedCharPos - allowedCharPos)] += 1;
 	}
 }
 

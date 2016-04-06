@@ -3,11 +3,11 @@
 
 int main()
 {
-	CStringsCount wordsCount;
+	std::map<std::string, unsigned> wordsCount;
 	std::string str;
 	std::getline(std::cin, str);
-	AddWordsFromStringToCStringsCount(str, wordsCount);
-	wordsCount.PutToOutStream(std::cout);
+	AddWordsFromStringToStringsCountMap(str, wordsCount);
+	PutMapToOutStream(std::cout, wordsCount);
 
 	return 0;
 }
