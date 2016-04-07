@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream>
+#include <algorithm>
+
 class CRectangle
 {
 public:
@@ -107,7 +110,21 @@ public:
 
 	bool Intersect(CRectangle const& other)
 	{
-		
+		auto interLeft = std::max(GetLeft(), other.GetLeft());
+		auto interWidth = std::min(GetRight(), other.GetRight()) - interLeft;
+		auto interTop = std::max(GetTop(), other.GetTop());
+		auto interHeight = std::min(GetTop(), other.GetBottom()) - interTop;
+		if (interHeight < 0 || interWidth < 0)
+		{
+			SetWidth(0);
+			SetHeight(0);
+			return false;
+		}
+		SetLeft(interLeft);
+		SetWidth(interWidth);
+		SetHeight(interHeight);
+		SetTop(interTop);
+		return true;
 	}
 
 private:
