@@ -8,18 +8,15 @@ std::string FindAndReplace(std::string const& subject, std::string const& search
 {
 	if (search.empty())
 		return subject;
-	auto resString = subject;
+
+	auto result = subject;
 	size_t startForSearch = 0;
-	while (true)
+	while ((startForSearch = result.find(search, startForSearch)) != std::string::npos)
 	{
-		startForSearch = resString.find(search, startForSearch);
-		if (startForSearch != std::string::npos)
-		{
-			resString.replace(startForSearch, search.length(), replace);
-			startForSearch += replace.length();
-		}
-		else
-			return resString;
+		result.replace(startForSearch, search.length(), replace);
+		startForSearch += replace.length();
 	}
+
+	return result;
 }
 

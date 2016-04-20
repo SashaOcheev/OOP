@@ -8,40 +8,86 @@
 
 BOOST_AUTO_TEST_SUITE(FindAndReplace_test)
 
-BOOST_AUTO_TEST_CASE(with_empty_strings)
-{
-	std::string sourceString = "sometimes happy, sometimes sad";
-	std::string ethalonString = sourceString;
+	struct Fixture
+	{
+		std::string source = "sometimes happy, sometimes sad";
+	};
 
-	auto resString = FindAndReplace(sourceString, "", "asd");
-	BOOST_CHECK_EQUAL_COLLECTIONS(ethalonString.begin(), ethalonString.end(), resString.begin(), resString.end());
+	BOOST_FIXTURE_TEST_CASE(replace_empty_to_not_empty, Fixture)
+	{
+		auto result = FindAndReplace(source, "", "asd");
+		BOOST_CHECK_EQUAL_COLLECTIONS(source.begin(), source.end(), result.begin(), result.end());
+	}
 
-	resString = FindAndReplace(sourceString, "", "");
-	BOOST_CHECK_EQUAL_COLLECTIONS(ethalonString.begin(), ethalonString.end(), resString.begin(), resString.end());
+	BOOST_FIXTURE_TEST_CASE(replace_empty_to_empty, Fixture)
+	{
+		auto result = FindAndReplace(source, "", "");
+		BOOST_CHECK_EQUAL_COLLECTIONS(source.begin(), source.end(), result.begin(), result.end());
+	}
 
-	ethalonString = "soimes happy, soimes sad";
-	resString = FindAndReplace(sourceString, "met", "");
-	BOOST_CHECK_EQUAL_COLLECTIONS(ethalonString.begin(), ethalonString.end(), resString.begin(), resString.end());
+	BOOST_FIXTURE_TEST_CASE(replace_existed_to_empty, Fixture)
+	{
+		auto result = FindAndReplace(source, "met", "");
+		std::string expected = "soimes happy, soimes sad";
+		BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), result.begin(), result.end());
+	}
 
-	ethalonString = "";
-	sourceString = "";
-	resString = FindAndReplace(sourceString, "met", "asd");
-	BOOST_CHECK_EQUAL_COLLECTIONS(ethalonString.begin(), ethalonString.end(), resString.begin(), resString.end());
-}
 
-BOOST_AUTO_TEST_CASE(without_empty_strings)
-{
-	std::string sourceString = "12312312345";
-	std::string ethalonString = "123paste5";
-	auto resString = FindAndReplace("12312312345", "1231234", "paste");
-	BOOST_CHECK_EQUAL_COLLECTIONS(ethalonString.begin(), ethalonString.end(), resString.begin(), resString.end());
+	BOOST_FIXTURE_TEST_CASE(replace_not_existed_to_empty, Fixture)
+	{
+		auto result = FindAndReplace(source, "merch", "");
+		BOOST_CHECK_EQUAL_COLLECTIONS(source.begin(), source.end(), result.begin(), result.end());
+	}
 
-	sourceString = "mamampapa";
-	ethalonString = "pastepastempapa";
-	resString = FindAndReplace("mamampapa", "ma", "paste");
-	BOOST_CHECK_EQUAL_COLLECTIONS(ethalonString.begin(), ethalonString.end(), resString.begin(), resString.end());
-}
+	BOOST_FIXTURE_TEST_CASE(replace_not_existed_to_not_empty, Fixture)
+	{
+		auto result = FindAndReplace(source, "merch", "asd");
+		BOOST_CHECK_EQUAL_COLLECTIONS(source.begin(), source.end(), result.begin(), result.end());
+	}
+
+	BOOST_FIXTURE_TEST_CASE(replace_existed_to_equalSize, Fixture)
+	{
+		auto result = FindAndReplace(source, "met", "rem");
+		std::string expected = "soremimes happy, soremimes sad";
+		BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), result.begin(), result.end());
+	}
+
+	BOOST_FIXTURE_TEST_CASE(replace_existed_to_lessSize, Fixture)
+	{
+		auto result = FindAndReplace(source, "met", "re");
+		std::string expected = "soreimes happy, soreimes sad";
+		BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), result.begin(), result.end());
+	}
+
+	BOOST_FIXTURE_TEST_CASE(replace_existed_to_moreSize, Fixture)
+	{
+		auto result = FindAndReplace(source, "met", "remm");
+		std::string expected = "soremmimes happy, soremmimes sad";
+		BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), result.begin(), result.end());
+	}
+
+	BOOST_FIXTURE_TEST_CASE(replace_in_empty, Fixture)
+	{
+		source = "";
+		auto result = FindAndReplace(source, "met", "remm");
+		BOOST_CHECK_EQUAL_COLLECTIONS(source.begin(), source.end(), result.begin(), result.end());
+	}
+
+
+	BOOST_FIXTURE_TEST_CASE(replace_1231234_in_12312312345, Fixture)
+	{
+		source = "12312312345";
+		std::string expected = "123paste5";
+		auto result = FindAndReplace(source,"1231234", "paste");
+		BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), result.begin(), result.end());
+	}
+
+	BOOST_FIXTURE_TEST_CASE(replace_ma_in_mama, Fixture)
+	{
+		source = "mamampapa";
+		std::string expected = "pastepastempapa";
+		auto result = FindAndReplace(source, "ma", "paste");
+		BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), result.begin(), result.end());
+	}
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
