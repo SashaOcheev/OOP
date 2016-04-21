@@ -4,14 +4,6 @@
 #include "CRectangle.h"
 
 
-CRectangle::CRectangle(int left, int top, int width, int height) :
-	m_left(left),
-	m_top(top)
-{
-	SetWidth(width);
-	SetHeight(height);
-}
-
 int CRectangle::GetWidth() const
 {
 	return m_width;

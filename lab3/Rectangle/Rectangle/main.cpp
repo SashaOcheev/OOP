@@ -3,16 +3,11 @@
 
 #include "stdafx.h"
 #include "CRectangle.h"
+#include "RectangleFromFile.h"
 
-int main()
+int main(int argc, char * argv[])
 {
-	CRectangle rect1(0, 0, 10, 10);
-	CRectangle rect2(11, 11, 10, 10);
-	if (rect1.Intersect(rect2))
-		std::cout << "true";
-	else
-		std::cout << "false";
-	std::cout << std::endl;
+	Set2RectangleFromFilesAndPutItAndIntersectionToOstream(argv[1], argv[2], std::cout);
+
 	return 0;
 }
-

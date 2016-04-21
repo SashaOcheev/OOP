@@ -1,13 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <algorithm>
-
 class CRectangle
 {
 public:
 	CRectangle() = default;
-	CRectangle(int left, int top, int width, int height);
 
 	int GetWidth() const;
 	void SetWidth(int width);
