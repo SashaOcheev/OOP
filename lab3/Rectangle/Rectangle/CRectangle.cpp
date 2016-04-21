@@ -3,6 +3,19 @@
 #include "stdafx.h"
 #include "CRectangle.h"
 
+void CRectangle::Reset(int left, int top, int width, int height)
+{
+	SetLeft(left);
+	SetTop(top);
+	SetWidth(width);
+	SetHeight(height);
+}
+
+CRectangle::CRectangle(int left, int top, int width, int height)
+{
+	Reset(left, top, width, height);
+}
+
 
 int CRectangle::GetWidth() const
 {
@@ -11,8 +24,12 @@ int CRectangle::GetWidth() const
 
 void CRectangle::SetWidth(int width)
 {
-	if (width > 0)
-		m_width = width;
+	if (width < 0)
+	{
+		width = 0;
+	}
+	
+	m_width = width;
 }
 
 
@@ -23,8 +40,12 @@ int CRectangle::GetHeight() const
 
 void CRectangle::SetHeight(int height)
 {
-	if (height > 0)
-		m_height = height;
+	if (height < 0)
+	{
+		height = 0;
+	}
+
+	m_height = height;
 }
 
 
@@ -79,7 +100,12 @@ unsigned CRectangle::Area() const
 
 unsigned CRectangle::Perimeter() const
 {
-	return (m_height + m_width) * 2;
+	auto perim = m_height + m_width;
+
+	if (GetWidth() > 0 && GetHeight() > 0)
+		perim *= 2;
+
+	return perim;
 }
 
 
@@ -91,6 +117,9 @@ void CRectangle::Move(int dx, int dy)
 
 void CRectangle::Scale(int sx, int sy)
 {
+	if (sx < 0 || sy < 0)
+		return;
+
 	SetWidth(m_width * sx);
 	SetHeight(m_height * sy);
 }

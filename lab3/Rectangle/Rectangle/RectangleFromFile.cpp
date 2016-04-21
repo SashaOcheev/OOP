@@ -1,13 +1,6 @@
 #include "stdafx.h"
 #include "RectangleFromFile.h"
 
-int ReadIntFromFile(std::ifstream & file)
-{
-	int number;
-	file >> number;
-	return number;
-}
-
 CRectangle SetRectangleFromFile(std::string const& fileName)
 {
 	CRectangle rect;
@@ -21,23 +14,19 @@ CRectangle SetRectangleFromFile(std::string const& fileName)
 	{
 		std::string command;
 		file >> command;
-		if (command == "Rectangle")
+		int a, b, c, d;
+		if (command == "Rectangle" && file >> a >> b >> c >> d)
 		{
 			isSetted = true;
-			rect.SetLeft(ReadIntFromFile(file));
-			rect.SetTop(ReadIntFromFile(file));
-			rect.SetWidth(ReadIntFromFile(file));
-			rect.SetHeight(ReadIntFromFile(file));
+			rect.Reset(a, b, c, d);
 		}
-		else if (command == "Move" && isSetted)
+		else if (command == "Move" && isSetted && file >> a >> b)
 		{
-			rect.Move(ReadIntFromFile(file), 0);
-			rect.Move(0, ReadIntFromFile(file));
+			rect.Move(a, b);
 		}
-		else if (command == "Scale" && isSetted)
+		else if (command == "Scale" && isSetted && file >> a >> b)
 		{
-			rect.Scale(ReadIntFromFile(file), 1);
-			rect.Scale(1, ReadIntFromFile(file));
+			rect.Scale(a, b);
 		}
 	}
 	return rect;

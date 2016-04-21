@@ -4,6 +4,8 @@ class CRectangle
 {
 public:
 	CRectangle() = default;
+	void Reset(int left, int top, int width, int height);
+	CRectangle(int left, int top, int width, int height);
 
 	int GetWidth() const;
 	void SetWidth(int width);
