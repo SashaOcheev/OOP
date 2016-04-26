@@ -10,24 +10,29 @@ CRectangle SetRectangleFromFile(std::string const& fileName)
 		return rect;
 
 	bool isSetted = false;
+	std::string command;
+	int a, b, c, d;
 	while (!file.eof())
 	{
-		std::string command;
 		file >> command;
-		int a, b, c, d;
 		if (command == "Rectangle" && file >> a >> b >> c >> d)
 		{
 			isSetted = true;
 			rect.Reset(a, b, c, d);
 		}
-		else if (command == "Move" && isSetted && file >> a >> b)
+		else if (command == "Move" && file >> a >> b && isSetted)
 		{
 			rect.Move(a, b);
 		}
-		else if (command == "Scale" && isSetted && file >> a >> b)
+		else if (command == "Scale" && file >> a >> b && isSetted)
 		{
 			rect.Scale(a, b);
 		}
+
+		if (file.fail())
+			file.clear();
+		command.clear();
+		
 	}
 	return rect;
 }

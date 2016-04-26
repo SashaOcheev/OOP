@@ -1,0 +1,6 @@
+Rectangle:
+	Left top : (-3; -2)
+	Size : 20*30
+	Right bottom : (17; 28)
+	Area : 600
+	Perimeter : 100

@@ -229,3 +229,55 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
+
+
+bool IsFilesEqual(std::string const& fileName1, std::string const& fileName2)
+{
+	auto command = "fc " + fileName1 + " " + fileName2;
+	return !system(command.c_str());
+}
+
+bool IsRightSetAndPut(std::string const& inFile, std::string const& outFile, std::string const& expectedFile, std::string const& rectName)
+{
+	auto rect = SetRectangleFromFile("tests/input/" + inFile);
+	std::string FullOutFileName = "tests\\output\\" + outFile;
+	std::ofstream outputFile(FullOutFileName);
+	PutRectangleToOstream(rect, rectName, outputFile);
+	outputFile.close();
+	return IsFilesEqual(FullOutFileName, "tests\\expected\\" + expectedFile);
+}
+
+BOOST_AUTO_TEST_SUITE(Rectangle_from_file)
+
+//TODO Rename tests names;
+	BOOST_AUTO_TEST_CASE(routine_case)
+	{
+		BOOST_CHECK(IsRightSetAndPut("input1.txt", "output1.txt", "output1.txt", "Rectangle"));
+	}
+
+	BOOST_AUTO_TEST_CASE(set_in_the_end_after_move_and_scale)
+	{
+		BOOST_CHECK(IsRightSetAndPut("input2.txt", "output2.txt", "output2.txt", "Rectangle"));
+	}
+
+	BOOST_AUTO_TEST_CASE(set_move_and_scale_and_move_and_scale)
+	{
+		BOOST_CHECK(IsRightSetAndPut("input3.txt", "output3.txt", "output3.txt", "Rectangle"));
+	}
+
+	BOOST_AUTO_TEST_CASE(double_set_and_last_set_int_the_end)
+	{
+		BOOST_CHECK(IsRightSetAndPut("input4.txt", "output4.txt", "output4.txt", "Rectangle"));
+	}
+
+	BOOST_AUTO_TEST_CASE(without_set)
+	{
+		BOOST_CHECK(IsRightSetAndPut("input5.txt", "output5.txt", "output5.txt", "Rectangle"));
+	}
+
+	BOOST_AUTO_TEST_CASE(invalid_commands)
+	{
+		BOOST_CHECK(IsRightSetAndPut("input6.txt", "output6.txt", "output6.txt", "Rectangle"));
+	}
+
+BOOST_AUTO_TEST_SUITE_END()

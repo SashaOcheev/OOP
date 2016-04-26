@@ -1,0 +1,6 @@
+Rectangle:
+	Left top : (-1; -2)
+	Size : 3*4
+	Right bottom : (2; 2)
+	Area : 12
+	Perimeter : 14

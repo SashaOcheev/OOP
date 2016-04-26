@@ -1,0 +1,6 @@
+Rectangle:
+	Left top : (0; 0)
+	Size : 0*0
+	Right bottom : (0; 0)
+	Area : 0
+	Perimeter : 0
