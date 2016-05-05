@@ -18,6 +18,7 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 		CRectangle rect2;
 	};
 
+
 	BOOST_FIXTURE_TEST_CASE(SetLeft_test, Fixture)
 	{
 		rect.SetLeft(-10);
@@ -44,7 +45,7 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(SetWidth_test, Fixture)
 	{
-		rect.Reset(1, 1, 1, 1);
+		rect.Set(1, 1, 1, 1);
 		rect.SetWidth(-10);
 		BOOST_CHECK_EQUAL(rect.GetWidth(), 0);
 		BOOST_CHECK_EQUAL(rect.GetRight(), 1);
@@ -64,7 +65,7 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(SetHeight_test, Fixture)
 	{
-		rect.Reset(1, 1, 1, 1);
+		rect.Set(1, 1, 1, 1);
 		rect.SetHeight(-10);
 		BOOST_CHECK_EQUAL(rect.GetHeight(), 0);
 		BOOST_CHECK_EQUAL(rect.GetBottom(), 1);
@@ -122,38 +123,38 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(Perimeter_test, Fixture)
 	{
-		rect.Reset(-5, -5, 10, 15);
+		rect.Set(-5, -5, 10, 15);
 		BOOST_CHECK_EQUAL(rect.Perimeter(), 50);
 
-		rect.Reset(-5, -5, 0, 15);
+		rect.Set(-5, -5, 0, 15);
 		BOOST_CHECK_EQUAL(rect.Perimeter(), 15);
 
-		rect.Reset(-5, -5, 10, 0);
+		rect.Set(-5, -5, 10, 0);
 		BOOST_CHECK_EQUAL(rect.Perimeter(), 10);
 		
-		rect.Reset(-5, -5, 0, 0);
+		rect.Set(-5, -5, 0, 0);
 		BOOST_CHECK_EQUAL(rect.Perimeter(), 0);
 	}
 
 	BOOST_FIXTURE_TEST_CASE(Area_test, Fixture)
 	{
-		rect.Reset(-5, -5, 10, 15);
+		rect.Set(-5, -5, 10, 15);
 		BOOST_CHECK_EQUAL(rect.Area(), 150);
 
-		rect.Reset(-5, -5, 0, 15);
+		rect.Set(-5, -5, 0, 15);
 		BOOST_CHECK_EQUAL(rect.Area(), 0);
 
-		rect.Reset(-5, -5, 10, 0);
+		rect.Set(-5, -5, 10, 0);
 		BOOST_CHECK_EQUAL(rect.Area(), 0);
 
-		rect.Reset(-5, -5, 0, 0);
+		rect.Set(-5, -5, 0, 0);
 		BOOST_CHECK_EQUAL(rect.Area(), 0);
 	}
 
 
 	BOOST_FIXTURE_TEST_CASE(Move_test, Fixture)
 	{
-		rect.Reset(-5, -6, 10, 15);
+		rect.Set(-5, -6, 10, 15);
 		rect.Move(-4, -5);
 		BOOST_CHECK_EQUAL(rect.GetLeft(), -9);
 		BOOST_CHECK_EQUAL(rect.GetTop(), -11);
@@ -170,7 +171,7 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(Scale_test, Fixture)
 	{
-		rect.Reset(-5, -6, 1, 2);
+		rect.Set(-5, -6, 1, 2);
 		rect.Scale(-1, 2);
 		BOOST_CHECK_EQUAL(rect.GetWidth(), 1);
 		BOOST_CHECK_EQUAL(rect.GetHeight(), 2);
@@ -194,8 +195,8 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(doesnt_intersects_test, Fixture)
 	{
-		rect.Reset(-5, -3, 10, 15);
-		rect2.Reset(6, 13, 20, 30);
+		rect.Set(-5, -3, 10, 15);
+		rect2.Set(6, 13, 20, 30);
 		auto isIntersects = rect.Intersect(rect2);
 		BOOST_CHECK(!isIntersects);
 		BOOST_CHECK_EQUAL(rect.GetLeft(), -5);
@@ -206,8 +207,8 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(intersects_test, Fixture)
 	{
-		rect.Reset(-5, -3, 10, 15);
-		rect2.Reset(0, 6, 20, 30);
+		rect.Set(-5, -3, 10, 15);
+		rect2.Set(0, 6, 20, 30);
 		auto isIntersects = rect.Intersect(rect2);
 		BOOST_CHECK(isIntersects);
 		BOOST_CHECK_EQUAL(rect.GetLeft(), 0);
@@ -218,8 +219,8 @@ BOOST_AUTO_TEST_SUITE(CRectangle_test)
 
 	BOOST_FIXTURE_TEST_CASE(one_rectangle_enclude_other_test, Fixture)
 	{
-		rect.Reset(0, 0, 10, 10);
-		rect2.Reset(2, 0, 4, 5);
+		rect.Set(0, 0, 10, 10);
+		rect2.Set(2, 0, 4, 5);
 		auto isIntersects = rect2.Intersect(rect);
 		BOOST_CHECK(isIntersects);
 		BOOST_CHECK_EQUAL(rect2.GetLeft(), 2);

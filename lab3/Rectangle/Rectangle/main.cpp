@@ -7,13 +7,21 @@
 
 int main(int argc, char * argv[])
 {
-	if (argc < 3)
+	if (argc < 3 || argc > 4)
 	{
-		std::cout << "enter two input file to set rectangles" << std::endl;
+		std::cout << "Usage: <rectangle_file_1> <rectangle_file_2> [reult_file]" << std::endl;
 		return 1;
 	}
 	
-	Set2RectangleFromFilesAndPutItAndIntersectionToOstream(argv[1], argv[2], std::cout);
+	if (argc == 3)
+	{
+		PutRectanglentersectionsToOstream(argv[1], argv[2], std::cout);
+	}
+	else
+	{
+		std::ofstream outFile(argv[3]);
+		PutRectanglentersectionsToOstream(argv[1], argv[2], outFile);
+	}
 
 	return 0;
 }
