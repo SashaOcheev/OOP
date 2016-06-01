@@ -54,10 +54,10 @@ BOOST_AUTO_TEST_CASE(is_a_body)
 	{
 		const auto expectedString = R"(Cylinder:
 	density = 8.8
-	volume = 31076.43
-	mass = 2890031.581
+	volume = 31076.43347
+	mass = 273472.6145
 	radius = 42.8
-	height = 5.8
+	height = 5.4
 )";
 		BOOST_CHECK_EQUAL(static_cast<const CBody &>(cylinder).ToString(), expectedString);
 	}

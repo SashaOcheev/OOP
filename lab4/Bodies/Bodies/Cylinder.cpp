@@ -4,7 +4,7 @@
 
 
 CCylinder::CCylinder(double density, double radius, double height)
-	: CSolidBody("Cone", density)
+	: CSolidBody("Cylinder", density)
 	, m_radius(radius)
 	, m_height(height)
 {
@@ -27,6 +27,6 @@ double CCylinder::GetVolume() const
 
 void CCylinder::AppendProperties(std::ostream &strm) const
 {
-	strm << "\tRadius = " << GetRadius() << std::endl
-		<< "\tHeight = " << GetHeight() << std::endl;
+	strm << "\tradius = " << GetRadius() << std::endl
+		<< "\theight = " << GetHeight() << std::endl;
 }

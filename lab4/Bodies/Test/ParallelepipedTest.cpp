@@ -60,12 +60,12 @@ BOOST_FIXTURE_TEST_SUITE(Parallelepiped, Parallelepiped_)
 	{
 		const auto expectedString = R"(Parallelepiped:
 	density = 8.8
-	volume = 31076.43
-	mass = 2890031.581
+	volume = 2912.112
+	mass = 25626.5856
 	width = 42.8
-	height = 5.8
+	height = 5.4
 	depth = 12.6
-	)";
+)";
 		BOOST_CHECK_EQUAL(static_cast<const CBody &>(parallelepiped).ToString(), expectedString);
 	}
 BOOST_AUTO_TEST_SUITE_END()
