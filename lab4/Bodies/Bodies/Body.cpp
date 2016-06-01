@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "Body.h"
 
-CBody::CBody(const std::string & type)
+CBody::CBody(const std::string &type)
 	: m_type(type)
 {
 }

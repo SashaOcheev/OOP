@@ -2,14 +2,15 @@
 //
 
 #include "stdafx.h"
+#include "program.h"
 
 
-std::vector<std::unique_ptr<CBody> > GetBodiesFromIStream(std::istream &strm)
-{
-	std::vector<std::unique_ptr<CBody> > bodies;
-
-	return bodies;
-}
+//std::vector<std::unique_ptr<CBody> > GetBodiesFromIStream(std::istream &strm)
+//{
+//	std::vector<std::unique_ptr<CBody> > bodies;
+//
+//	return bodies;
+//}
 
 
 int main()

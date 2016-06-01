@@ -22,7 +22,7 @@ BOOST_FIXTURE_TEST_SUITE(Cone, Cone_)
 	// является объемным телом
 	BOOST_AUTO_TEST_CASE(is_a_body)
 	{
-		BOOST_CHECK(static_cast<const CBody*>(&сone));
+		BOOST_CHECK(static_cast<const CBody*>(&cone));
 	}
 	// имеет радиус
 	BOOST_AUTO_TEST_CASE(has_a_radius)

@@ -13,7 +13,7 @@ public:
 
 	virtual ~CBody();
 protected:
-	virtual void AppendProperties(std::ostream & strm) const = 0;
+	virtual void AppendProperties(std::ostream &strm) const = 0;
 private:
 	std::string m_type;
 };

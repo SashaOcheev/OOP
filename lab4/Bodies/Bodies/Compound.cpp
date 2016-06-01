@@ -3,22 +3,23 @@
 #include "Compound.h"
 
 
-CCompound::CCompound(const std::unique_ptr<CBody> &bodyPtr)
+CCompound::CCompound(std::unique_ptr<CBody> &bodyPtr)
 	: CBody("Compound")
 {
-	m_bodyPtrs.push_back(bodyPtr);
+	m_bodyPtrs.push_back(std::move(bodyPtr));
 }
 
-CCompound::CCompound(const std::vector<std::unique_ptr<CBody> > &bodyPtrs)
+CCompound::CCompound(std::vector<std::unique_ptr<CBody> > &bodyPtrs)
 	: CBody("Compound")
-	, m_bodyPtrs(bodyPtrs)
+	, m_bodyPtrs(std::move(bodyPtrs))
 {
 }
 
 
-void CCompound::AddBody(const std::unique_ptr<CBody> &bodyPtr)
+void CCompound::AddBody(std::unique_ptr<CBody> &bodyPtr)
 {
-	m_bodyPtrs.push_back(bodyPtr);
+
+	m_bodyPtrs.push_back(std::move(bodyPtr));
 }
 
 double CCompound::GetDensity() const
@@ -29,24 +30,24 @@ double CCompound::GetDensity() const
 double CCompound::GetVolume() const
 {
 	return
-		std::accumulate(m_bodyPtrs.cbegin(), m_bodyPtrs.end(), 0,
-		[](const std::unique_ptr<CBody> &body1, const std::unique_ptr<CBody> &body2)
+		std::accumulate(m_bodyPtrs.begin(), m_bodyPtrs.end(), 0.0,
+		[](double currentVolume, const std::unique_ptr<CBody> &body)
 	{
-		return body1->GetVolume() + body2->GetVolume();
+		return currentVolume + body->GetVolume();
 	});
 }
 
 double CCompound::GetMass() const
 {
 	return
-		std::accumulate(m_bodyPtrs.cbegin(), m_bodyPtrs.end(), 0,
-		[](const std::unique_ptr<CBody> &body1, const std::unique_ptr<CBody> &body2)
+		std::accumulate(m_bodyPtrs.begin(), m_bodyPtrs.end(), 0.0,
+		[](double currentMass, const std::unique_ptr<CBody> &body)
 	{
-		return body1->GetMass() + body2->GetMass();
+		return currentMass + body->GetMass();
 	});
 }
 
-void CCompound::AppendProperties(std::ostream & strm) const
+void CCompound::AppendProperties(std::ostream &strm) const
 {
 	std::for_each(m_bodyPtrs.begin(), m_bodyPtrs.end(),
 		[](const std::unique_ptr<CBody> &body)
