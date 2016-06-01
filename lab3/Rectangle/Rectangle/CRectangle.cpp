@@ -3,17 +3,13 @@
 #include "stdafx.h"
 #include "CRectangle.h"
 
-void CRectangle::Set(int left, int top, int width, int height)
+
+CRectangle::CRectangle(int left, int top, int width, int height)
 {
 	SetLeft(left);
 	SetTop(top);
 	SetWidth(width);
 	SetHeight(height);
-}
-
-CRectangle::CRectangle(int left, int top, int width, int height)
-{
-	Set(left, top, width, height);
 }
 
 

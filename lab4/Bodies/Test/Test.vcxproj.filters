@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\bodies">
+      <UniqueIdentifier>{cf174132-6ab1-49c8-9f50-c3d6289fb80b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\Body.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\Compound.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\Cone.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\Cylinder.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\Parallelepiped.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\SolidBody.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\Sphere.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bodies\program.h">
+      <Filter>Source Files\bodies</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\Body.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\Compound.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\Cone.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\Cylinder.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\Parallelepiped.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\SolidBody.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\Sphere.cpp">
+      <Filter>Source Files\bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="ConeTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CylinderTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParallelepipedTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
