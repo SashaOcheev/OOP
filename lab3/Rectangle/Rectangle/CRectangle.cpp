@@ -6,11 +6,18 @@
 
 CRectangle::CRectangle(int left, int top, int width, int height)
 {
+	Set(left, top, width, height);
+}
+
+void CRectangle::Set(int left, int top, int width, int height)
+{
 	SetLeft(left);
 	SetTop(top);
 	SetWidth(width);
 	SetHeight(height);
 }
+
+
 
 
 int CRectangle::GetWidth() const
@@ -20,12 +27,7 @@ int CRectangle::GetWidth() const
 
 void CRectangle::SetWidth(int width)
 {
-	if (width < 0)
-	{
-		width = 0;
-	}
-	
-	m_width = width;
+	m_width = (width > 0) ? width : 0;
 }
 
 
@@ -36,12 +38,7 @@ int CRectangle::GetHeight() const
 
 void CRectangle::SetHeight(int height)
 {
-	if (height < 0)
-	{
-		height = 0;
-	}
-
-	m_height = height;
+	m_height = (height > 0) ? height : 0;
 }
 
 
@@ -99,7 +96,9 @@ unsigned CRectangle::Perimeter() const
 	auto perim = m_height + m_width;
 
 	if (GetWidth() > 0 && GetHeight() > 0)
+	{
 		perim *= 2;
+	}
 
 	return perim;
 }

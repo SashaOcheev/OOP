@@ -184,6 +184,7 @@
     <ClCompile Include="..\Bodies\Parallelepiped.cpp" />
     <ClCompile Include="..\Bodies\SolidBody.cpp" />
     <ClCompile Include="..\Bodies\Sphere.cpp" />
+    <ClCompile Include="CompoundTest.cpp" />
     <ClCompile Include="ConeTest.cpp" />
     <ClCompile Include="CylinderTest.cpp" />
     <ClCompile Include="ParallelepipedTest.cpp" />

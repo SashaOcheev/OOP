@@ -9,7 +9,7 @@ struct Cylinder_
 {
 	const double expectedRadius = 42.8;
 	const double expectedDensity = 8.8;
-	const double expectedVolume = 31'076.43;
+	const double expectedVolume = 31'076.4335;
 	const double expectedHeight = 5.4;
 	const CCylinder cylinder;
 	Cylinder_()

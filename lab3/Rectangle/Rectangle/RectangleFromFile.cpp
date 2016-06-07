@@ -30,7 +30,9 @@ CRectangle SetRectangleFromFile(std::string const& fileName)
 		}
 
 		if (file.fail())
+		{
 			file.clear();
+		}
 		command.clear();
 		
 	}

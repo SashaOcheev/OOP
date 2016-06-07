@@ -18,8 +18,12 @@ CCompound::CCompound(std::vector<std::unique_ptr<CBody> > &bodyPtrs)
 
 void CCompound::AddBody(std::unique_ptr<CBody> &bodyPtr)
 {
-
-	m_bodyPtrs.push_back(std::move(bodyPtr));
+	const CBody *thisBody = this;
+	const CBody *appendedBody = bodyPtr.get();
+	if (thisBody != appendedBody)
+	{
+		m_bodyPtrs.push_back(std::move(bodyPtr));
+	}
 }
 
 double CCompound::GetDensity() const

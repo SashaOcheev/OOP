@@ -5,6 +5,7 @@ class CRectangle
 public:
 	CRectangle() = default;
 	CRectangle(int left, int top, int width, int height);
+	void Set(int left, int top, int width, int height);
 
 	int GetWidth() const;
 	void SetWidth(int width);
