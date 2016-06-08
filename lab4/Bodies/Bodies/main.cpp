@@ -3,18 +3,16 @@
 
 #include "stdafx.h"
 #include "program.h"
+#include "BodiesVector.h"
 
-
-//std::vector<std::unique_ptr<CBody> > GetBodiesFromIStream(std::istream &strm)
-//{
-//	std::vector<std::unique_ptr<CBody> > bodies;
-//
-//	return bodies;
-//}
 
 
 int main()
 {
+	CBodiesVector vect;
+	vect.ReadBodies(std::cin);
+	vect.GetMaxMassBody(std::cout);
+	vect.GetMinWeightBody(std::cout);
     return 0;
 }
 

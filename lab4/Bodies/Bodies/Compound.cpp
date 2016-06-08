@@ -3,20 +3,13 @@
 #include "Compound.h"
 
 
-CCompound::CCompound(std::unique_ptr<CBody> &bodyPtr)
+CCompound::CCompound()
 	: CBody("Compound")
-{
-	m_bodyPtrs.push_back(std::move(bodyPtr));
-}
-
-CCompound::CCompound(std::vector<std::unique_ptr<CBody> > &bodyPtrs)
-	: CBody("Compound")
-	, m_bodyPtrs(std::move(bodyPtrs))
 {
 }
 
 
-void CCompound::AddBody(std::unique_ptr<CBody> &bodyPtr)
+void CCompound::AddBody(std::unique_ptr<CBody> bodyPtr)
 {
 	const CBody *thisBody = this;
 	const CBody *appendedBody = bodyPtr.get();
@@ -28,7 +21,8 @@ void CCompound::AddBody(std::unique_ptr<CBody> &bodyPtr)
 
 double CCompound::GetDensity() const
 {
-	return GetMass() / GetVolume();
+	auto volume = GetVolume();
+	return (volume > 0) ? (GetMass() / volume) : 0;
 }
 
 double CCompound::GetVolume() const
@@ -53,9 +47,8 @@ double CCompound::GetMass() const
 
 void CCompound::AppendProperties(std::ostream &strm) const
 {
-	std::for_each(m_bodyPtrs.begin(), m_bodyPtrs.end(),
-		[](const std::unique_ptr<CBody> &body)
+	for (auto const &body : m_bodyPtrs)
 	{
-		body->ToString();
-	});
+		strm << body->ToString();
+	}
 }

@@ -7,13 +7,12 @@ class CCompound final:
 	public CBody
 {
 public:
-	CCompound(std::unique_ptr<CBody> &bodyPtr);
-	CCompound(std::vector<std::unique_ptr<CBody> > &bodyPtrs);
+	CCompound();
 
 	double GetDensity() const override;
 	double GetVolume() const override;
 	double GetMass() const override;
-	void AddBody(std::unique_ptr<CBody> &bodyPtr);
+	void AddBody(std::unique_ptr<CBody> bodyPtr);
 protected:
 	void AppendProperties(std::ostream &strm) const override;
 private:
