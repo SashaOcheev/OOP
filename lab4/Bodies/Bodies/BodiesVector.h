@@ -9,7 +9,7 @@ public:
 	void GetMaxMassBody(std::ostream &strm) const;
 	void GetMinWeightBody(std::ostream &strm, const double liquidDensity = 1000.0) const;
 private:
-	std::unique_ptr<CBody> GetBody(std::istream &strm, const std::string &type);
-	std::vector<std::unique_ptr<CBody> > m_bodyPtrs;
-	std::unique_ptr<CBody> GetCompound(std::istream &strm);
+	std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type);
+	std::vector<std::shared_ptr<CBody> > m_bodyPtrs;
+	std::shared_ptr<CBody> GetCompound(std::istream &strm);
 };

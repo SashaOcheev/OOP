@@ -34,7 +34,7 @@ BOOST_FIXTURE_TEST_SUITE(Compound, Compound_)
 	BOOST_AUTO_TEST_CASE(can_add_shape)
 	{
 		auto cone = CCone(15, 10, 40);
-		compound.AddBody(std::make_unique<CCone>(CCone(8.8, 42.8, 5.4)));
+		compound.AddBody(std::make_shared<CCone>(CCone(8.8, 42.8, 5.4)));
 	}
 
 	struct One_body_compound_ : Compound_
@@ -54,7 +54,7 @@ Cone:
 )";
 		One_body_compound_()
 		{
-			compound.AddBody(std::make_unique<CCone>(CCone(8.8, 42.8, 5.4)));
+			compound.AddBody(std::make_shared<CCone>(CCone(8.8, 42.8, 5.4)));
 		}
 	};
 
@@ -75,10 +75,6 @@ Cone:
 		{
 			BOOST_CHECK_EQUAL(compound.ToString(), expectedString);
 		}
-		/*BOOST_AUTO_TEST_CASE(can_not_take_itself)
-		{
-			compound.AddBody(std::make_unique<CCompound>(compound));
-		}*/
 	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -9,7 +9,7 @@ CCompound::CCompound()
 }
 
 
-void CCompound::AddBody(std::unique_ptr<CBody> bodyPtr)
+void CCompound::AddBody(std::shared_ptr<CBody> &&bodyPtr)
 {
 	const CBody *thisBody = this;
 	const CBody *appendedBody = bodyPtr.get();
@@ -29,7 +29,7 @@ double CCompound::GetVolume() const
 {
 	return
 		std::accumulate(m_bodyPtrs.begin(), m_bodyPtrs.end(), 0.0,
-		[](double currentVolume, const std::unique_ptr<CBody> &body)
+		[](double currentVolume, const std::shared_ptr<CBody> &body)
 	{
 		return currentVolume + body->GetVolume();
 	});
@@ -39,7 +39,7 @@ double CCompound::GetMass() const
 {
 	return
 		std::accumulate(m_bodyPtrs.begin(), m_bodyPtrs.end(), 0.0,
-		[](double currentMass, const std::unique_ptr<CBody> &body)
+		[](double currentMass, const std::shared_ptr<CBody> &body)
 	{
 		return currentMass + body->GetMass();
 	});

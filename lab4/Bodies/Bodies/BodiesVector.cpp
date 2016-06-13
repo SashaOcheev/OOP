@@ -5,7 +5,7 @@
 void CBodiesVector::GetMaxMassBody(std::ostream &strm) const
 {
 	auto max = std::max_element(m_bodyPtrs.begin(), m_bodyPtrs.end(),
-		[](const std::unique_ptr<CBody> &body1, const std::unique_ptr<CBody> &body2)
+		[](const std::shared_ptr<CBody> &body1, const std::shared_ptr<CBody> &body2)
 	{
 		return body1->GetMass() < body2->GetMass();
 	});
@@ -14,13 +14,13 @@ void CBodiesVector::GetMaxMassBody(std::ostream &strm) const
 
 void CBodiesVector::GetMinWeightBody(std::ostream &strm, const double liquidDensity) const
 {
-	auto GetWeight = [&liquidDensity](const std::unique_ptr<CBody> &body)->double
+	auto GetWeight = [&liquidDensity](const std::shared_ptr<CBody> &body)->double
 	{
 		return (body->GetDensity() - liquidDensity) * 9.8 * body->GetVolume();
 	};
 
 	auto min = std::min_element(m_bodyPtrs.begin(), m_bodyPtrs.end(),
-		[&](const std::unique_ptr<CBody> &body1, const std::unique_ptr<CBody> &body2)
+		[&](const std::shared_ptr<CBody> &body1, const std::shared_ptr<CBody> &body2)
 	{
 		return GetWeight(body1) < GetWeight(body2);
 	});
@@ -44,28 +44,28 @@ void CBodiesVector::ReadBodies(std::istream & strm)
 	}
 }
 
-std::unique_ptr<CBody> CBodiesVector::GetBody(std::istream &strm, const std::string &type)
+std::shared_ptr<CBody> CBodiesVector::GetBody(std::istream &strm, const std::string &type)
 {
 	int a, b, c, d;
 	if (type == "Cone" && strm >> a >> b >> c)
 	{
-		return std::make_unique<CCone>(CCone(a, b, c));
+		return std::make_shared<CCone>(CCone(a, b, c));
 	}
 	else if (type == "Cylinder" && strm >> a >> b >> c)
 	{
-		return std::make_unique<CCylinder>(CCylinder(a, b, c));
+		return std::make_shared<CCylinder>(CCylinder(a, b, c));
 	}
 	else if (type == "Parallelepiped" && strm >> a >> b >> c >> d)
 	{
-		return std::make_unique<CParallelepiped>(CParallelepiped(a, b, c, d));
+		return std::make_shared<CParallelepiped>(CParallelepiped(a, b, c, d));
 	}
 	else if (type == "Sphere" && strm >> a >> b)
 	{
-		return std::make_unique<CSphere>(CSphere(a, b));
+		return std::make_shared<CSphere>(CSphere(a, b));
 	}
 	else if (type == "Compound")
 	{
-		return std::make_unique<CCompound>(GetCompound(strm));
+		return std::make_shared<CCompound>(GetCompound(strm));
 	}
 	else
 	{
@@ -73,7 +73,7 @@ std::unique_ptr<CBody> CBodiesVector::GetBody(std::istream &strm, const std::str
 	}
 }
 
-std::unique_ptr<CBody> CBodiesVector::GetCompound(std::istream &strm)
+std::shared_ptr<CBody> CBodiesVector::GetCompound(std::istream &strm)
 {
 	CCompound compound;
 	std::string type;
@@ -87,5 +87,5 @@ std::unique_ptr<CBody> CBodiesVector::GetCompound(std::istream &strm)
 		}
 	}
 
-	return std::make_unique<CBody>(compound);
+	return std::make_shared<CBody>(compound);
 }
