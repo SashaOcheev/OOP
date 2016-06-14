@@ -2,7 +2,6 @@
 
 #include "Body.h"
 
-
 class CCompound final:
 	public CBody
 {
@@ -17,4 +16,5 @@ protected:
 	void AppendProperties(std::ostream &strm) const override;
 private:
 	std::vector<std::shared_ptr<CBody> > m_bodyPtrs;
+	bool CanAdd(CBody *mainPtr, CBody *bodyPtr);
 };

@@ -1,5 +1,5 @@
-
 #include "stdafx.h"
+#include <sstream>
 #include "SolidBody.h"
 
 CSolidBody::CSolidBody(const std::string &type, double density)
@@ -11,6 +11,10 @@ CSolidBody::CSolidBody(const std::string &type, double density)
 double CSolidBody::GetMass() const
 {
 	return GetVolume() * GetDensity();
+}
+
+CSolidBody::~CSolidBody()
+{
 }
 
 double CSolidBody::GetDensity() const

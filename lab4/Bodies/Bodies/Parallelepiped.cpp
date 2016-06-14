@@ -1,6 +1,6 @@
-
 #include "stdafx.h"
 #include "Parallelepiped.h"
+#include <sstream>
 
 
 CParallelepiped::CParallelepiped(double density, double width, double height, double depth)

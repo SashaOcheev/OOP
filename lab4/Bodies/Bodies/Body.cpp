@@ -1,6 +1,7 @@
-
-
 #include "stdafx.h"
+#include <string>
+#include <iomanip>
+#include <sstream>
 #include "Body.h"
 
 CBody::CBody(const std::string &type)

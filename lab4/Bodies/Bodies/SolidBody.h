@@ -9,9 +9,10 @@ class CSolidBody :
 public:
 	CSolidBody(const std::string &type, double density);
 
-	double GetDensity() const override final;
+	double GetDensity() const final;
 	double GetVolume() const override = 0;
-	double GetMass() const override final;
+	double GetMass() const final;
+	~CSolidBody() override;
 protected:
 	void AppendProperties(std::ostream & strm) const override = 0;
 private:

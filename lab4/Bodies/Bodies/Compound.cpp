@@ -1,5 +1,10 @@
-
 #include "stdafx.h"
+#include <memory>
+#include <vector>
+#include <numeric>
+#include <sstream>
+#include <algorithm>
+#include <exception>
 #include "Compound.h"
 
 
@@ -11,13 +16,12 @@ CCompound::CCompound()
 
 void CCompound::AddBody(std::shared_ptr<CBody> &&bodyPtr)
 {
-	const CBody *thisBody = this;
-	const CBody *appendedBody = bodyPtr.get();
-	if (thisBody != appendedBody)
+	if (CanAdd(this, bodyPtr.get()))
 	{
 		m_bodyPtrs.push_back(std::move(bodyPtr));
 	}
 }
+
 
 double CCompound::GetDensity() const
 {
@@ -51,4 +55,28 @@ void CCompound::AppendProperties(std::ostream &strm) const
 	{
 		strm << body->ToString();
 	}
+}
+
+bool CCompound::CanAdd(CBody *mainPtr, CBody *bodyPtr)
+{
+	if (mainPtr == bodyPtr)
+	{
+		return false;
+	}
+
+	try
+	{
+		CCompound& compoundPtr = dynamic_cast<CCompound&>(*bodyPtr);
+		for (auto it = compoundPtr.m_bodyPtrs.begin(); it != compoundPtr.m_bodyPtrs.end(); it++)
+		{
+			if (!CanAdd(mainPtr, it->get()))
+				return false;
+		}
+	}
+	catch (const std::bad_cast)
+	{
+		std::cout << "bad cast" << std::endl;
+	}
+
+	return true;
 }
