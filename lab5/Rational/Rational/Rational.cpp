@@ -9,7 +9,7 @@ CRational::CRational(int numerator, int denominator)
 {
 	if (denominator == 0)
 	{
-		throw std::invalid_argument("Denominator must not be equals zero");
+		throw std::invalid_argument("Denominator must be nonzero");
 	}
 	m_numerator = (denominator < 0) ? -numerator : numerator;
 	m_denominator = abs(denominator);
@@ -18,9 +18,11 @@ CRational::CRational(int numerator, int denominator)
 
 void CRational::Normalize()
 {
-	int gcd = boost::math::gcd(m_numerator, m_denominator);
-	if (gcd == 0)
+	if (!(m_numerator * m_denominator))
+	{
 		return;
+	}
+	int gcd = boost::math::gcd(m_numerator, m_denominator);
 	m_numerator /= gcd;
 	m_denominator /= gcd;
 }
@@ -42,7 +44,7 @@ double CRational::ToDouble() const
 
 std::pair<int, CRational> CRational::ToCompoundFraction() const
 {
-	return { m_numerator / m_denominator, CRational(abs(m_numerator % m_denominator), abs(m_denominator)) };
+	return { m_numerator / m_denominator, CRational(m_numerator % m_denominator, m_denominator) };
 }
 
 CRational const CRational::operator+() const
@@ -143,10 +145,6 @@ std::istream & operator >> (std::istream & stream, CRational & rational)
 	if ((stream >> numerator) && (stream.get() == '/') && (stream >> denominator))
 	{
 		rational = CRational(numerator, denominator);
-	}
-	else
-	{
-		stream.setstate(stream.rdstate() | std::ios_base::failbit);
 	}
 	return stream;
 }

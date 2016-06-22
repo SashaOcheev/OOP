@@ -1,325 +1,46 @@
+// bodies_tests.cpp : Defines the entry point for the console application.
+//
 
 #include "stdafx.h"
-#include "../Rational/Rational.h"
 #include <boost/test/output/compiler_log_formatter.hpp>
 
-void VerifyRational(const CRational & r, int expectedNumerator, int expectedDenominator)
+
+/*
+Данный класс управляет формаитрованием журнала запуска тестов
+Для того, чтобы увидеть результат, приложение должно быть запущено с ключём --log-level=test_suite (см. Post-build event в настройках проекта)
+*/
+class SpecLogFormatter :
+	public boost::unit_test::output::compiler_log_formatter
 {
-	BOOST_CHECK_EQUAL(r.GetNumerator(), expectedNumerator);
-	BOOST_CHECK_EQUAL(r.GetDenominator(), expectedDenominator);
+	virtual void test_unit_start(std::ostream &os, boost::unit_test::test_unit const& tu) override
+	{
+		// перед запуском test unit-а выводим имя test unit-а, заменяя символ подчеркивания на пробел
+		os << std::string(m_indent, ' ') << boost::replace_all_copy(tu.p_name.get(), "_", " ") << std::endl;
+		// увеличиваем отступ для вывода имен последующих test unit-ов в виде дерева
+		m_indent += 2;
+	}
+
+	virtual void test_unit_finish(std::ostream &/*os*/, boost::unit_test::test_unit const& /*tu*/, unsigned long /*elapsed*/) override
+	{
+		// по окончании test unit-а уменьшаем отступ
+		m_indent -= 2;
+	}
+
+	int m_indent = 0;
+};
+
+boost::unit_test::test_suite* init_unit_test_suite(int /*argc*/, char* /*argv*/[])
+{
+	// Заменили имя log formatter на пользовательский
+	boost::unit_test::unit_test_log.set_formatter(new SpecLogFormatter);
+	// Имя корневого набора тестов - All tests
+	boost::unit_test::framework::master_test_suite().p_name.value = "All tests";
+	return 0;
 }
 
-void VerifyRational(const std::pair<int, CRational> const& rational, int expectedIntegerPart, int expectedNumerator, int expectedDenominator)
+
+int main(int argc, char* argv[])
 {
-	BOOST_CHECK_EQUAL(rational.first, expectedIntegerPart);
-	BOOST_CHECK_EQUAL((rational.second).GetNumerator(), expectedNumerator);
-	BOOST_CHECK_EQUAL((rational.second).GetDenominator(), expectedDenominator);
+	// Запускаем тесты, передавая параметры командной строки и кастомную функцию инициализации тестов
+	return boost::unit_test::unit_test_main(&init_unit_test_suite, argc, argv);
 }
-
-BOOST_AUTO_TEST_SUITE(Rational_number)
-	BOOST_AUTO_TEST_CASE(is_0_by_default)
-	{
-		VerifyRational(CRational(), 0, 1);
-	}
-	BOOST_AUTO_TEST_CASE(can_be_constructed_from_integer)
-	{
-		VerifyRational(CRational(10), 10, 1);
-		VerifyRational(CRational(-10), -10, 1);
-		VerifyRational(CRational(0), 0, 1);
-	}
-	BOOST_AUTO_TEST_CASE(can_be_constructed_with_numerator_and_denominator)
-	{
-		VerifyRational(CRational(5, 2), 5, 2);
-		VerifyRational(CRational(-5, 2), -5, 2);
-		VerifyRational(CRational(5, -2), -5, 2);
-		VerifyRational(CRational(-5, -2), 5, 2);
-	}
-	BOOST_AUTO_TEST_CASE(is_normalized_after_construction)
-	{
-		VerifyRational(CRational(6, 8), 3, 4);
-		VerifyRational(CRational(6, -8), -3, 4);
-		VerifyRational(CRational(-6, 8), -3, 4);
-		VerifyRational(CRational(-6, -8), 3, 4);
-		VerifyRational(CRational(-10, 20), -1, 2);
-	}
-	BOOST_AUTO_TEST_CASE(cant_have_zero_denominator)
-	{
-		BOOST_REQUIRE_THROW(CRational(1, 0), std::invalid_argument);
-	}
-
-	BOOST_AUTO_TEST_CASE(can_be_returned_in_the_form_of_a_mixed_fraction)
-	{
-		VerifyRational(CRational(15, 2).ToCompoundFraction(), 7, 1, 2);
-		VerifyRational(CRational(-9, 4).ToCompoundFraction(), -2, 1, 4);
-		VerifyRational(CRational(1, 2).ToCompoundFraction(), 0, 1, 2);
-	}
-
-	BOOST_AUTO_TEST_CASE(can_be_interpret_to_double)
-	{
-		BOOST_CHECK_EQUAL(CRational(3, 5).ToDouble(), 0.6);
-		BOOST_CHECK_EQUAL(CRational(-2, 10).ToDouble(), -0.2);
-		BOOST_CHECK_EQUAL(CRational(0, 10).ToDouble(), 0);
-	}
-
-	struct unaryOperation_
-	{
-		CRational rational;
-		unaryOperation_()
-			: rational(3, 5)
-		{}
-	};
-
-	BOOST_FIXTURE_TEST_SUITE(unary_operation, unaryOperation_)
-		BOOST_AUTO_TEST_CASE(unary_plus_does_not_change_sign)
-		{
-			VerifyRational(+rational, 3, 5);
-		}
-		BOOST_AUTO_TEST_CASE(unary_minus_change_numerator_sign)
-		{
-			VerifyRational(-rational, -3, 5);
-		}
-		BOOST_AUTO_TEST_CASE(unary_plus_does_not_change_source)
-		{
-			auto r1 = rational;
-			VerifyRational(rational, 3, 5);
-		}
-		BOOST_AUTO_TEST_CASE(unary_minus_does_not_change_source)
-		{
-			auto r1 = -rational;
-			VerifyRational(rational, 3, 5);
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-	struct binaryOperation_
-	{
-		CRational rational;
-		binaryOperation_()
-			: rational(1, 2)
-		{}
-	};
-
-	BOOST_FIXTURE_TEST_SUITE(assignment_expression, binaryOperation_)
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_summ_with_the_other_rational)
-		{
-			rational += CRational(1, 6);
-			VerifyRational(rational, 2, 3);
-		}
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_summ_with_int)
-		{
-			rational += CRational(1);
-			VerifyRational(rational, 3, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_minus_with_the_other_rational)
-		{
-			rational -= CRational(1, 6);
-			VerifyRational(rational, 1, 3);
-		}
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_minus_with_int)
-		{
-			rational -= CRational(1);
-			VerifyRational(rational, -1, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_multiplication_by_other_rational)
-		{
-			rational *= CRational(2, 3);
-			VerifyRational(rational, 1, 3);
-		}
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_multiplication_by_integer)
-		{
-			rational *= CRational(3);
-			VerifyRational(rational, 3, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_division_by_other_rational)
-		{
-			rational /= CRational(2, 3);
-			VerifyRational(rational, 3, 4);
-		}
-		BOOST_AUTO_TEST_CASE(can_be_changed_after_division_by_integerr)
-		{
-			rational /= CRational(3);
-			VerifyRational(rational, 1, 6);
-		}
-
-		BOOST_AUTO_TEST_CASE(cant_be_divided_by_rational_with_zero_numerator)
-		{
-			BOOST_REQUIRE_THROW(rational /= CRational(0, 3), std::invalid_argument);
-		}
-		BOOST_AUTO_TEST_CASE(cant_be_divided_by_rational_with_zero_integer)
-		{
-			BOOST_REQUIRE_THROW(rational /= 0, std::invalid_argument);
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-
-	BOOST_FIXTURE_TEST_SUITE(binary_opeartion, binaryOperation_)
-		BOOST_AUTO_TEST_CASE(can_be_realized_the_binary_summ_with_rational_or_ineteger)
-		{
-			VerifyRational(rational + CRational(1, 6), 2, 3);
-			VerifyRational(rational + 1, 3, 2);
-			VerifyRational(1 + rational, 3, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_realize_the_binary_minus_with_rational_or_ineteger)
-		{
-			VerifyRational(rational - CRational(1, 6), 1, 3);
-			VerifyRational(rational - 1, -1, 2);
-			VerifyRational(1 - rational, 1, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_multiplied_by_another_rational_or_integer)
-		{
-			VerifyRational(rational * CRational(2, 3), 1, 3);
-			VerifyRational(rational * -3, -3, 2);
-			VerifyRational(7 * rational, 7, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_dividen_by_another_rational_or_integer)
-		{
-			VerifyRational(rational / CRational(2, 3), 3, 4);
-			VerifyRational(rational / 5, 1, 10);
-			VerifyRational(7 / CRational(2, 3), 21, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(cant_be_dividen_by_zero_numerator_rational_or_zero_integer)
-		{
-			BOOST_REQUIRE_THROW(rational / CRational(0, 3), std::invalid_argument);
-			BOOST_REQUIRE_THROW(rational /= 0, std::invalid_argument);
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-
-	BOOST_FIXTURE_TEST_SUITE(binary_opeartion_does_not_change_source, binaryOperation_)
-		BOOST_AUTO_TEST_CASE(plus)
-		{
-			rational + CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			rational + CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			1 + CRational(1, 2);
-			VerifyRational(rational, 1, 2);
-		}
-		BOOST_AUTO_TEST_CASE(minus)
-		{
-			rational - CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			rational - CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			1 - CRational(1, 2);
-			VerifyRational(rational, 1, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(multiplication)
-		{
-			rational * CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			rational * CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			1 * CRational(1, 2);
-			VerifyRational(rational, 1, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(division)
-		{
-			rational / CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			rational / CRational(1, 6);
-			VerifyRational(rational, 1, 2);
-			1 / CRational(1, 2);
-			VerifyRational(rational, 1, 2);
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-	struct comparingOperation_
-	{
-		CRational rational;
-		comparingOperation_()
-			: rational(2, 1)
-		{}
-	};
-	BOOST_FIXTURE_TEST_SUITE(comparing_operations, comparingOperation_)
-		BOOST_AUTO_TEST_CASE(can_be_compared_integer_and_rational_by_operator_equals)
-		{
-			BOOST_CHECK(rational == rational);
-			BOOST_CHECK(!(rational == rational + 1));
-			BOOST_CHECK(rational == 2);
-			BOOST_CHECK(!(rational == 3));
-			BOOST_CHECK(2 == rational);
-			BOOST_CHECK(!(3 == rational));
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_compared_integer_and_rational_by_operator_not_equals)
-		{
-			BOOST_CHECK(!(rational != rational));
-			BOOST_CHECK(rational != rational + 1);
-			BOOST_CHECK(!(rational != 2));
-			BOOST_CHECK(rational != 3);
-			BOOST_CHECK(!(2 != rational));
-			BOOST_CHECK(3 != rational);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_compared_integer_and_rational_by_operator_more)
-		{
-			BOOST_CHECK(!(rational > rational));
-			BOOST_CHECK(rational > rational - 1);
-			BOOST_CHECK(!(rational > 2));
-			BOOST_CHECK(rational > 1);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_compared_integer_and_rational_by_operator_more_or_equals)
-		{
-			BOOST_CHECK(rational >= rational);
-			BOOST_CHECK(rational >= rational - 1);
-			BOOST_CHECK(rational >= 2);
-			BOOST_CHECK(rational >= 1);
-			BOOST_CHECK(!(rational >= 3));
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_compared_integer_and_rational_by_operator_less)
-		{
-			BOOST_CHECK(!(rational < rational));
-			BOOST_CHECK(rational < rational + 1);
-			BOOST_CHECK(!(rational < 2));
-			BOOST_CHECK(rational < 3);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_compared_integer_and_rational_by_operator_less_or_equals)
-		{
-			BOOST_CHECK(rational <= rational);
-			BOOST_CHECK(rational <= rational + 1);
-			BOOST_CHECK(rational <= 2);
-			BOOST_CHECK(rational <= 3);
-			BOOST_CHECK(!(rational <= 1));
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-
-	BOOST_FIXTURE_TEST_SUITE(ostream_operator, binaryOperation_)
-		BOOST_AUTO_TEST_CASE(can_be_put_to_ostream)
-		{
-			std::ostringstream strm;
-			strm << rational;
-			BOOST_CHECK_EQUAL(strm.str(), "1/2");
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-	BOOST_FIXTURE_TEST_SUITE(istream_operator, binaryOperation_)
-
-		BOOST_AUTO_TEST_CASE(can_be_got_from_istream)
-		{
-			std::istringstream strm("1/2");
-			strm >> rational;
-			VerifyRational(rational, 1, 2);
-		}
-
-		BOOST_AUTO_TEST_CASE(can_be_got_negative_rational_from_istream)
-		{
-			std::istringstream strm("-7/15");
-			strm >> rational;
-			VerifyRational(rational, -7, 15);
-		}
-	BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE_END()

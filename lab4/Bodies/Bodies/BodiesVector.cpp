@@ -6,6 +6,10 @@
 //
 //void GetMaxMassBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs)
 //{
+//  if (m_bodyPtrs.empty())
+//  {
+//		return;
+//  }
 //	auto max = std::max_element(m_bodyPtrs.begin(), m_bodyPtrs.end(),
 //		[](const std::shared_ptr<CBody> &body1, const std::shared_ptr<CBody> &body2)
 //	{
@@ -16,6 +20,10 @@
 //
 //void GetMinWeightBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs, const double liquidDensity)
 //{
+//  if (m_bodyPtrs.empty())
+//  {
+//		return;
+//  }
 //	auto GetWeight = [&liquidDensity](const std::shared_ptr<CBody> &body)->double
 //	{
 //		return (body->GetDensity() - liquidDensity) * 9.8 * body->GetVolume();

@@ -22,6 +22,30 @@ void CCompound::AddBody(std::shared_ptr<CBody> &&bodyPtr)
 	}
 }
 
+bool CCompound::CanAdd(CBody * mainPtr, CBody * bodyPtr)
+{
+	std::cout << mainPtr << " " << bodyPtr << std::endl;
+	if (mainPtr == bodyPtr)
+	{
+		return false;
+	}
+
+	try
+	{
+		CCompound& compoundPtr = dynamic_cast<CCompound&>(*bodyPtr);
+		for (auto it = compoundPtr.m_bodyPtrs.begin(); it != compoundPtr.m_bodyPtrs.end(); it++)
+		{
+			if (!CanAdd(mainPtr, it->get()))
+				return false;
+		}
+	}
+	catch (const std::bad_cast)
+	{
+		std::cout << "bad cast" << std::endl;
+	}
+
+	return true;
+}
 
 double CCompound::GetDensity() const
 {
@@ -55,28 +79,4 @@ void CCompound::AppendProperties(std::ostream &strm) const
 	{
 		strm << body->ToString();
 	}
-}
-
-bool CCompound::CanAdd(CBody *mainPtr, CBody *bodyPtr)
-{
-	if (mainPtr == bodyPtr)
-	{
-		return false;
-	}
-
-	try
-	{
-		CCompound& compoundPtr = dynamic_cast<CCompound&>(*bodyPtr);
-		for (auto it = compoundPtr.m_bodyPtrs.begin(); it != compoundPtr.m_bodyPtrs.end(); it++)
-		{
-			if (!CanAdd(mainPtr, it->get()))
-				return false;
-		}
-	}
-	catch (const std::bad_cast)
-	{
-		std::cout << "bad cast" << std::endl;
-	}
-
-	return true;
 }
