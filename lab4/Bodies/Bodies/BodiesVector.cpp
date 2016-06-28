@@ -45,10 +45,10 @@
 //	while (type != "next")
 //	{
 //		strm >> type;
-//		auto body = std::move(GetBody(strm, type));
+//		auto body = GetBody(strm, type);
 //		if (body)
 //		{
-//			compound.AddBody(std::move(body));
+//			compound.AddBody(body);
 //		}
 //	}
 //
@@ -90,10 +90,10 @@
 //	std::string type;
 //	while (strm >> type)
 //	{
-//		auto body = std::move(GetBody(strm, type));
+//		auto body = GetBody(strm, type);
 //		if (body)
 //		{
-//			m_bodyPtrs.push_back(std::move(body));
+//			m_bodyPtrs.push_back(body);
 //		}
 //		if (strm.fail())
 //		{

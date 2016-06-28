@@ -15,7 +15,13 @@ int main()
 	CCompound compound;
 	compound.AddBody(std::make_shared<CCone>(CCone(1, 1, 1)));
 	compound.AddBody(std::make_shared<CCompound>(compound));
+
 	std::cout << compound.ToString() << std::endl;
+
+	int l = 5;
+	int *p = &l;
+	auto t = std::make_shared<int>(l);
+	std::cout << &l << " " << p << " " << t.get() << std::endl;
     return 0;
 }
 

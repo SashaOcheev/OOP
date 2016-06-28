@@ -18,11 +18,11 @@ void CCompound::AddBody(std::shared_ptr<CBody> &&bodyPtr)
 {
 	if (CanAdd(this, bodyPtr.get()))
 	{
-		m_bodyPtrs.push_back(std::move(bodyPtr));
+		m_bodyPtrs.push_back(bodyPtr);
 	}
 }
 
-bool CCompound::CanAdd(CBody * mainPtr, CBody * bodyPtr)
+bool CCompound::CanAdd(CBody * mainPtr, CBody * bodyPtr) const
 {
 	std::cout << mainPtr << " " << bodyPtr << std::endl;
 	if (mainPtr == bodyPtr)
