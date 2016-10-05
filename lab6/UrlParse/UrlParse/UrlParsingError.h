@@ -1,8 +1,13 @@
 #pragma once
-class CUrlParsingError :
-	public std::invalid_argument
+
+enum class Protocol
 {
-public:
-	CUrlParsingError(const std::string & msg);
+	HTTP = 80,
+	HTTPS = 443,
 };
 
+class CUrlParsingError : public std::invalid_argument
+{
+public:
+	CUrlParsingError(const std::string & msg = std::string());
+};

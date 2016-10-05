@@ -108,21 +108,21 @@ Cone:
 
 	BOOST_FIXTURE_TEST_SUITE(add_father, Add_father_)
 		BOOST_AUTO_TEST_CASE(has_a_density)
-	{
-		BOOST_CHECK_CLOSE_FRACTION(compound.GetDensity(), expectedDensity, 1e-7);
-	}
-	BOOST_AUTO_TEST_CASE(has_a_volume)
-	{
-		BOOST_CHECK_CLOSE_FRACTION(compound.GetVolume(), expectedVolume, 1e-7);
-	}
-	BOOST_AUTO_TEST_CASE(has_a_mass)
-	{
-		BOOST_CHECK_CLOSE_FRACTION(compound.GetMass(), expectedVolume * expectedDensity, 1e-7);
-	}
-	BOOST_AUTO_TEST_CASE(can_be_converted_to_string)
-	{
-		BOOST_CHECK_EQUAL(compound.ToString(), expectedString);
-	}
-	BOOST_AUTO_TEST_SUITE_END()
+		{
+			BOOST_CHECK_CLOSE_FRACTION(compound.GetDensity(), expectedDensity, 1e-7);
+		}
+		BOOST_AUTO_TEST_CASE(has_a_volume)
+		{
+			BOOST_CHECK_CLOSE_FRACTION(compound.GetVolume(), expectedVolume, 1e-7);
+		}
+		BOOST_AUTO_TEST_CASE(has_a_mass)
+		{
+			BOOST_CHECK_CLOSE_FRACTION(compound.GetMass(), expectedVolume * expectedDensity, 1e-7);
+		}
+		BOOST_AUTO_TEST_CASE(can_be_converted_to_string)
+		{
+			BOOST_CHECK_EQUAL(compound.ToString(), expectedString);
+		}
+		BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

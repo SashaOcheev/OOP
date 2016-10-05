@@ -9,12 +9,12 @@
 
 int main()
 {
-	/*auto vect = ReadBodies(std::cin);
+	auto vect = ReadBodies(std::cin);
 	GetMaxMassBody(std::cout, vect);
-	GetMinWeightBody(std::cout, vect);*/
-	CCompound compound;
+	GetMinWeightBody(std::cout, vect);
+	/*CCompound compound;
 	compound.AddBody(std::make_shared<CCone>(CCone(1, 1, 1)));
-	compound.AddBody(std::make_shared<CCompound>(compound));
+	compound.AddBody(std::shared_ptr<CCompound> compound);
 
 	std::cout << compound.ToString() << std::endl;
 
@@ -22,6 +22,6 @@ int main()
 	int *p = &l;
 	auto t = std::make_shared<int>(l);
 	std::cout << &l << " " << p << " " << t.get() << std::endl;
-    return 0;
+    return 0;*/
 }
 
