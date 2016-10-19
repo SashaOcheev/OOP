@@ -98,11 +98,11 @@ std::string CHttpUrl::GetCorrectDomain(const std::string & domain)
 
 std::string CHttpUrl::GetCorrectDocument(const std::string & document)
 {
-	if (!std::all_of(document.begin(), document.end(), [](char ch) {
-		return ch == '.' || ch == '-' || ch == '/' || ch == '_' || isalnum(ch);
+	if (std::any_of(document.begin(), document.end(), [](char ch) {
+		return ch == '\\' || ch == ':' || ch == '?' || ch == '|' || ch == '<' || ch == '\"' || ch == '>' || ch == '*';
 	}))
 	{
-		throw CUrlParsingError("Document name must has only digits, letters \".\", \"-\", \"_\" or \"/\" characters.");
+		throw CUrlParsingError("Document name can not contain \\, :, ?, |, \", *, <, > characters.");
 	}
 	if (document.find("//") != std::string::npos)
 	{
