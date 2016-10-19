@@ -31,7 +31,8 @@ CHttpUrl::CHttpUrl(std::string const & domain, std::string const & document, Pro
 
 std::string CHttpUrl::GetURL() const
 {
-	return std::string();
+	return (GetProtocol() == Protocol::HTTP ? "http" : "https") + std::string("://")
+		+ GetDomain() + GetDocument();
 }
 
 std::string CHttpUrl::GetDomain() const
@@ -77,7 +78,7 @@ std::string CHttpUrl::GetCorrectDomain(const std::string & domain)
 	{
 		throw CUrlParsingError("Domain must has only digits, letters \".\" or \"-\" characters.");
 	}
-	if (domain[0] == '-' == domain[0] == '.')
+	if (domain.front() == '-' || domain.front() == '.')
 	{
 		throw CUrlParsingError("Domain can not begin by \"-\" or \".\".");
 	}

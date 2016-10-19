@@ -14,6 +14,7 @@ void GetUrl()
 		{
 			auto httpurl = CHttpUrl(URL);
 			std::cout << "URL: " << httpurl.GetURL() << std::endl;
+			std::cout << "Domain: " << httpurl.GetDomain() << std::endl;
 			std::cout << "Protocol: " << (httpurl.GetProtocol() == Protocol::HTTP ? "http" : "https") << std::endl;
 			std::cout << "Document: " << httpurl.GetDocument() << std::endl;
 			std::cout << "Port: " << httpurl.GetPort() << std::endl;
