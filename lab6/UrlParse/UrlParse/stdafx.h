@@ -14,6 +14,8 @@
 #include <stdexcept>
 #include <string>
 #include <algorithm>
+#include <vector>
+#include <functional>
 
 
 // TODO: reference additional headers your program requires here

@@ -21,44 +21,14 @@ public:
 		std::string const& domain,
 		std::string const& document,
 		Protocol protocol = Protocol::HTTP,
-		unsigned short port = 80)
-	{
-		if (IsCorrectDomain(domain) && IsCorrectDocument(document) && IsCorrectProtocol(protocol) && IsCorrectPort(port))
-		{
-			m_domain = domain;
-			m_document = document;
-			m_protocol = protocol;
-			m_port = port;
-			return;
-		}
-	}
+		unsigned short port = 80);
 
-	std::string GetURL() const
-	{
-		std::string protocol = (m_protocol == Protocol::HTTP) ? "http" : "https";
-		std::string port = (m_port == static_cast<unsigned short>(m_protocol)) ? "" : std::string(":") + std::to_string(m_port);
-		return protocol + "://" + m_domain + port + m_document;
-	}
+	std::string GetURL() const;
+	std::string GetDomain() const;
+	std::string GetDocument() const;
+	Protocol GetProtocol() const;
 
-	std::string GetDomain() const
-	{
-		return m_domain;
-	}
-
-	std::string GetDocument() const
-	{
-		return m_document;
-	}
-
-	Protocol GetProtocol() const
-	{
-		return m_protocol;
-	}
-
-	unsigned short GetPort() const
-	{
-		return m_port;
-	}
+	unsigned short GetPort() const;
 
 private:
 	Protocol m_protocol;
@@ -66,25 +36,13 @@ private:
 	std::string m_document;
 	unsigned short m_port;
 
-	bool IsCorrectDomain(const std::string & domain)
-	{
-		if (domain.empty())
-		{
-			throw CUrlParsingError("Domain is empty");
-		}
-		bool isCorrectCharachters = std::all_of(domain.begin(), domain.end(), [](const char ch) {
-			return isalnum(ch) && (ch == '-') && (ch == '.');
-		});
-		if (!isCorrectCharachters || domain.front() == '-' || domain.front() == '.' ||
-			domain.back() == '-' || domain.back() == '.' || domain.find("..") != std::string::npos)
-		{
-			throw CUrlParsingError("Domain has invalid sequence of characters");
-		}
-		return true;
-	}
-
-	bool IsCorrectDocument(const std::string & document)
-	{
-		
-	}
+	void Init(
+		std::string const& domain,
+		std::string const& document,
+		Protocol protocol = Protocol::HTTP,
+		unsigned short port = 80);
+	std::string GetCorrectDomain(const std::string & domain);
+	std::string GetCorrectDocument(const std::string & document);
+	Protocol GetCorrectProtocol(const std::string & protocol);
+	unsigned short GetCorrecPort(const unsigned short port);
 };
