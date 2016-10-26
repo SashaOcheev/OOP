@@ -133,60 +133,71 @@ BOOST_AUTO_TEST_SUITE(Correct_URL)
 		BOOST_FIXTURE_TEST_SUITE(Exceptions_In_Path, CorrectParts)
 			BOOST_AUTO_TEST_CASE(incorrect_charachters)
 			{
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "/ima*ges/pic.jpg", parts.protocol, parts.port), CUrlParsingError);
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "/images?/pic.jpg", parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl(parts.domain, "/ima*ges/pic.jpg", parts.protocol, parts.port), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Document name can not contain \\, :, ?, |, \", *, <, > characters."));
+				BOOST_CHECK_EXCEPTION(CHttpUrl(parts.domain, "/images?/pic.jpg", parts.protocol, parts.port), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Document name can not contain \\, :, ?, |, \", *, <, > characters."));
 			}
 
 			BOOST_AUTO_TEST_CASE(slash_by_slash)
 			{
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "/images//pic.jpg", parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl(parts.domain, "/images//pic.jpg", parts.protocol, parts.port), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Document path can not contain folder without name."));
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 
 	BOOST_AUTO_TEST_SUITE_END()
 
 
-	BOOST_FIXTURE_TEST_SUITE(Exceptions_By_Url, CorrectParts)
+	BOOST_FIXTURE_TEST_SUITE(Exceptions_In_Url, CorrectParts)
 
 		BOOST_AUTO_TEST_CASE(without_protocol_delim)
 		{
-			BOOST_CHECK_THROW(CHttpUrl("http:/arcadefire.com/images/pic.jpg"), CUrlParsingError);
+			BOOST_CHECK_EXCEPTION(CHttpUrl("http:/arcadefire.com/images/pic.jpg"), CUrlParsingError
+				, std::bind(IsCorrectMessage, std::placeholders::_1, "Url must has protocol before \"://\"."));
 		}
 
 		BOOST_FIXTURE_TEST_SUITE(Exceptions_In_Domain, CorrectParts)
 			BOOST_AUTO_TEST_CASE(empty)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http:///images/pic.jpg"), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http:///images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain must be not empty."));
 			}
 
 			BOOST_AUTO_TEST_CASE(invalid_charachters)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http://arc*adefire.com/images/pic.jpg", parts.document, parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arc*adefire.com/images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain must has only digits, letters \".\" or \"-\" characters."));
 			}
 
 			BOOST_AUTO_TEST_CASE(begins_by_dot)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http://.arcadefire.com/images/pic.jpg", parts.document, parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://.arcadefire.com/images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not begin by \"-\" or \".\"."));
 			}
 
 			BOOST_AUTO_TEST_CASE(begins_by_minus)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http://-arcadefire.com/images/pic.jpg", parts.document, parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://-arcadefire.com/images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not begin by \"-\" or \".\"."));
 			}
 
 			BOOST_AUTO_TEST_CASE(ends_by_dot)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http://arcadefire.com./images/pic.jpg", parts.document, parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arcadefire.com./images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not come to end by \".\"."));
 			}
 
 			BOOST_AUTO_TEST_CASE(without_dot)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http://com/images/pic.jpg", parts.document, parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://com/images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain must has at least two levels."));
 			}
 
 			BOOST_AUTO_TEST_CASE(dot_by_dot)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("http://arcadefire..com/images/pic.jpg", parts.document, parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arcadefire..com/images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Subdomain can not be empty."));
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 
@@ -194,20 +205,24 @@ BOOST_AUTO_TEST_SUITE(Correct_URL)
 		BOOST_FIXTURE_TEST_SUITE(Exceptions_In_Path, CorrectParts)
 			BOOST_AUTO_TEST_CASE(incorrect_charachters)
 			{
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "http://arcadefire.com/ima*ges/pic.jpg", parts.protocol, parts.port), CUrlParsingError);
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "http://arcadefire.com/images?/pic.jpg", parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arcadefire.com/ima*ges/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Document name can not contain \\, :, ?, |, \", *, <, > characters."));
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arcadefire.com/images?/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Document name can not contain \\, :, ?, |, \", *, <, > characters."));
 			}
 
 			BOOST_AUTO_TEST_CASE(slash_by_slash)
 			{
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "http://arcadefire.com/images//pic.jpg", parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arcadefire.com/images//pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Document path can not contain folder without name."));
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 
 		BOOST_FIXTURE_TEST_SUITE(Exceptions_In_Protocol, CorrectParts)
 			BOOST_AUTO_TEST_CASE(not_http_or_https)
 			{
-				BOOST_CHECK_THROW(CHttpUrl(parts.domain, "ftp://arcadefire.com/ima*ges/pic.jpg", parts.protocol, parts.port), CUrlParsingError);
+				BOOST_CHECK_THROW(CHttpUrl("ftp://arcadefire.com/images/pic.jpg"), CUrlParsingError
+					, std::bind(IsCorrectMessage, std::placeholders::_1, "Protocol must be \"http\" or \"https\"."));
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 
