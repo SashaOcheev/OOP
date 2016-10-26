@@ -59,7 +59,6 @@ void CHttpUrl::Init(std::string const & domain, std::string const & document, Pr
 {
 	auto newDomain = GetCorrectDomain(domain);
 	auto newDocument = GetCorrectDocument(document);
-	auto newPort = GetCorrecPort(port);
 	std::swap(m_domain, newDomain);
 	std::swap(m_document, newDocument);
 	m_protocol = protocol;
@@ -120,13 +119,4 @@ Protocol CHttpUrl::GetCorrectProtocol(const std::string & protocol)
 	}
 	return (protocol == "http") ? Protocol::HTTP : Protocol::HTTPS;
 
-}
-
-unsigned short CHttpUrl::GetCorrecPort(const unsigned short port)
-{
-	if (port < 0 || port > 65535)
-	{
-		throw CUrlParsingError("Port must be in range [0, 65535].");
-	}
-	return port;
 }

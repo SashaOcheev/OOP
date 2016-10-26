@@ -44,5 +44,4 @@ private:
 	std::string GetCorrectDomain(const std::string & domain);
 	std::string GetCorrectDocument(const std::string & document);
 	Protocol GetCorrectProtocol(const std::string & protocol);
-	unsigned short GetCorrecPort(const unsigned short port);
 };
