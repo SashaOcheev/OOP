@@ -27,7 +27,7 @@ bool IsCorrectMessage(const CUrlParsingError& ex, const std::string &correctMsg)
 	return true;
 }
 
-BOOST_AUTO_TEST_SUITE(Correct_URL)
+BOOST_AUTO_TEST_SUITE(test_url)
 
 	struct CorrectParts
 	{
