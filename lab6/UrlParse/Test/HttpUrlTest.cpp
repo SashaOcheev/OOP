@@ -28,6 +28,12 @@ BOOST_AUTO_TEST_SUITE(test_url)
 			VerifyParts(httpurl, "http://arcadefire.com/images/pic.jpg", Protocol::HTTP, "arcadefire.com", "/images/pic.jpg", 10);
 		}
 
+		BOOST_AUTO_TEST_CASE(dot_in_end_is_correct)
+		{
+			CHttpUrl httpurl("arcadefire.com.", "images/pic.jpg", Protocol::HTTP, 10);
+			VerifyParts(httpurl, "http://arcadefire.com./images/pic.jpg", Protocol::HTTP, "arcadefire.com.", "/images/pic.jpg", 10);
+		}
+
 		BOOST_AUTO_TEST_CASE(port_equals_80_by_default)
 		{
 			CHttpUrl httpurl("arcadefire.com", "images/pic.jpg", Protocol::HTTP);
@@ -54,6 +60,12 @@ BOOST_AUTO_TEST_SUITE(test_url)
 		{
 			CHttpUrl httpurl("https://arcadefire.com/images/pic.jpg");
 			VerifyParts(httpurl, "https://arcadefire.com/images/pic.jpg", Protocol::HTTPS, "arcadefire.com", "/images/pic.jpg", 443);
+		}
+
+		BOOST_AUTO_TEST_CASE(dot_in_end_is_correct)
+		{
+			CHttpUrl httpurl("http://arcadefire.com./images/pic.jpg");
+			VerifyParts(httpurl, "http://arcadefire.com./images/pic.jpg", Protocol::HTTP, "arcadefire.com.", "/images/pic.jpg", 80);
 		}
 
 		BOOST_AUTO_TEST_CASE(protocol_is_insensitive)
