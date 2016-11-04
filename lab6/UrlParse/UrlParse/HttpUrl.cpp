@@ -81,10 +81,6 @@ std::string CHttpUrl::GetCorrectDomain(const std::string & domain)
 	{
 		throw CUrlParsingError("Domain can not begin by \"-\" or \".\".");
 	}
-	if (domain.back() == '.')
-	{
-		throw CUrlParsingError("Domain can not come to end by \".\".");
-	}
 	if (domain.find('.') == std::string::npos)
 	{
 		throw CUrlParsingError("Domain must has at least two levels.");

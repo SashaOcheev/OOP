@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_SUITE(test_url)
 		SParts parts;
 	
 		CorrectParts()
-		{
+		{ 
 			parts.protocol = Protocol::HTTP;
 			parts.domain = "arcadefire.com";
 			parts.document = "/images/pic.jpg";
@@ -110,12 +110,6 @@ BOOST_AUTO_TEST_SUITE(test_url)
 					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not begin by \"-\" or \".\"."));
 			}
 
-			BOOST_AUTO_TEST_CASE(ends_by_dot)
-			{
-				BOOST_CHECK_EXCEPTION(CHttpUrl("arcadefire.com.", parts.document, parts.protocol, parts.port), CUrlParsingError
-					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not come to end by \".\"."));
-			}
-
 			BOOST_AUTO_TEST_CASE(without_dot)
 			{
 				BOOST_CHECK_EXCEPTION(CHttpUrl("com", parts.document, parts.protocol, parts.port), CUrlParsingError
@@ -180,12 +174,6 @@ BOOST_AUTO_TEST_SUITE(test_url)
 			{
 				BOOST_CHECK_EXCEPTION(CHttpUrl("http://-arcadefire.com/images/pic.jpg"), CUrlParsingError
 					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not begin by \"-\" or \".\"."));
-			}
-
-			BOOST_AUTO_TEST_CASE(ends_by_dot)
-			{
-				BOOST_CHECK_EXCEPTION(CHttpUrl("http://arcadefire.com./images/pic.jpg"), CUrlParsingError
-					, std::bind(IsCorrectMessage, std::placeholders::_1, "Domain can not come to end by \".\"."));
 			}
 
 			BOOST_AUTO_TEST_CASE(without_dot)
