@@ -19,7 +19,7 @@ CHttpUrl::CHttpUrl(std::string const & url)
 	
 	auto domain = url.substr(protocolPos + 3, documentPos - protocolPos - 3);
 	auto document = url.substr(documentPos);
-	auto port = (protocolString == "http") ? int(Protocol::HTTP) : int(Protocol::HTTPS);
+	auto port = (protocol == Protocol::HTTP) ? int(Protocol::HTTP) : int(Protocol::HTTPS);
 
 	Init(domain, document, protocol, port);
 }
@@ -109,10 +109,12 @@ std::string CHttpUrl::GetCorrectDocument(const std::string & document)
 
 Protocol CHttpUrl::GetCorrectProtocol(const std::string & protocol)
 {
-	if (protocol != "http" && protocol != "https")
+	auto lowerCaseProtocol = protocol;
+	std::transform(lowerCaseProtocol.begin(), lowerCaseProtocol.end(), lowerCaseProtocol.begin(), ::tolower);
+	if (lowerCaseProtocol != "http" && lowerCaseProtocol != "https")
 	{
 		throw CUrlParsingError("Protocol must be \"http\" or \"https\".");
 	}
-	return (protocol == "http") ? Protocol::HTTP : Protocol::HTTPS;
+	return (lowerCaseProtocol == "http") ? Protocol::HTTP : Protocol::HTTPS;
 
 }
