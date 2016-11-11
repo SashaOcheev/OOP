@@ -16,7 +16,7 @@ class CMyList
 	};
 
 	template<typename U>
-	class CListIterator : public std::iterator <std::random_access_iterator_tag, U>
+	class CListIterator : public std::iterator <std::bidirectional_iterator_tag, U>
 	{
 	public:
 		CListIterator(SNode* value, bool isReverse)
