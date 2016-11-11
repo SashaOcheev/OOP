@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_SUITE(test_url)
 		BOOST_AUTO_TEST_SUITE(Exceptions_In_Protocol)
 			BOOST_AUTO_TEST_CASE(not_http_or_https)
 			{
-				BOOST_CHECK_THROW(CHttpUrl("ftp://arcadefire.com/images/pic.jpg"), CUrlParsingError
+				BOOST_CHECK_EXCEPTION(CHttpUrl("ftp://arcadefire.com/images/pic.jpg"), CUrlParsingError
 					, std::bind(IsCorrectMessage, std::placeholders::_1, "Protocol must be \"http\" or \"https\"."));
 			}
 		BOOST_AUTO_TEST_SUITE_END()
