@@ -53,6 +53,21 @@ class CMyList
 			}
 			return *this;
 		}
+
+		CListIterator& operator++(int)
+		{
+			auto returned = *this;
+			if (m_isReverse)
+			{
+				m_node = m_node->prev;
+			}
+			else
+			{
+				m_node = m_node->next.get();
+			}
+			return returned;
+		}
+
 		CListIterator& operator--()
 		{
 			if (m_isReverse)
@@ -64,6 +79,20 @@ class CMyList
 				m_node = m_node->prev;
 			}
 			return *this;
+		}
+
+		CListIterator& operator--(int)
+		{
+			auto returned = *this;
+			if (m_isReverse)
+			{
+				m_node = m_node->next.get();
+			}
+			else
+			{
+				m_node = m_node->prev;
+			}
+			return returned;
 		}
 
 		SNode* operator->()const

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "../MyList/MyList.h"
+#include <iostream>
 
 struct EmptyStringList
 {
@@ -190,5 +191,18 @@ BOOST_FIXTURE_TEST_SUITE(CMyList_, EmptyStringList)
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_AUTO_TEST_CASE(should_not_cause_stack_oveflow_on_destruction)
+	{
+		{
+			CMyList<std::string> list;
+			for (int i = 0; i < 100000; ++i)
+			{
+				list.PushBack("123");
+			}
+			std::cout << "(list is filled, ";
+		}
+		std::cout << "and successfully destroyed)" << std::endl;
+	}
 
 BOOST_AUTO_TEST_SUITE_END()
