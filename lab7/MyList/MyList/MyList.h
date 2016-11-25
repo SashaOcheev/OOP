@@ -66,11 +66,12 @@ class CMyList
 			return *this;
 		}
 
-	private:
 		SNode* operator->()const
 		{
 			return m_node;
 		}
+
+	private:
 
 		SNode* m_node = nullptr;
 		bool m_isReverse = b false;
@@ -81,16 +82,29 @@ class CMyList
 
 public:
 	CMyList() = default;
-	CMyList(CMyList & list)
+
+	//copy constructor
+	CMyList(CMyList & other)
 	{
-		CMyList tmp;
-		for (auto const& elem : list)
+		*this = other;
+	}
+
+	//copy assignment
+	CMyList& operator=(CMyList & other)
+	{
+		if (this != &other) // защита от неправильного самоприсваивания
 		{
-			tmp.PushBack(elem);
+			CMyList tmp;
+			for (auto const & elem : other)
+			{
+				tmp.PushBack(elem);
+			}
+			std::swap(m_firstNode, tmp.m_firstNode);
+			std::swap(m_lastNode, tmp.m_lastNode);
+			m_size = tmp.m_size;
 		}
-		std::swap(m_firstNode, tmp.m_firstNode);
-		std::swap(m_lastNode, tmp.m_lastNode);
-		m_size = tmp.m_size;
+		// по соглашению всегда возвращаем *this
+		return *this;
 	}
 
 	~CMyList()
@@ -145,6 +159,7 @@ public:
 		m_firstNode = nullptr;
 		m_size = 0;
 	}
+
 	bool IsEmpty() const
 	{
 		return m_size == 0u;

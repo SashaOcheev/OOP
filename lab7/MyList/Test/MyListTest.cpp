@@ -174,9 +174,17 @@ BOOST_FIXTURE_TEST_SUITE(CMyList_, EmptyStringList)
 			BOOST_CHECK(list.IsEmpty());
 		}
 
-		BOOST_AUTO_TEST_CASE(have_copy_constructor)
+		BOOST_AUTO_TEST_CASE(has_copy_constructor)
 		{
 			CMyList<std::string> list1(list);
+			VerifyList(list, expectedStrings);
+			VerifyList(list1, expectedStrings);
+		}
+
+		BOOST_AUTO_TEST_CASE(has_copy_assignment_operator)
+		{
+			CMyList<std::string> list1;
+			list1 = list;
 			VerifyList(list, expectedStrings);
 			VerifyList(list1, expectedStrings);
 		}
