@@ -36,11 +36,6 @@ class CMyList
 			return m_node == other.m_node;
 		}
 
-		U & operator*() const
-		{
-			return m_node->data;
-		}
-
 		CListIterator& operator++()
 		{
 			m_node = (m_isReverse ? m_node->prev : m_node->next.get());
@@ -67,12 +62,21 @@ class CMyList
 			return returned;
 		}
 
-		SNode* operator->()const
+		U& operator*() const
 		{
-			return m_node;
+			return m_node->data;
+		}
+
+		U* operator->() const
+		{
+			return &m_node->data;
 		}
 
 	private:
+		SNode* get()const
+		{
+			return m_node;
+		}
 
 		SNode* m_node = nullptr;
 		bool m_isReverse = b false;
@@ -228,8 +232,8 @@ public:
 		}
 		else
 		{
-			auto node = std::make_unique<SNode>(data, it->prev, std::move(it->prev->next));
-			it->prev = std::move(node.get());
+			auto node = std::make_unique<SNode>(data, it.get()->prev, std::move(it.get()->prev->next));
+			it.get()->prev = std::move(node.get());
 			node->prev->next = std::move(node);
 		}
 	}
@@ -243,18 +247,18 @@ public:
 
 		if (it == begin())
 		{
-			it->next->prev = nullptr;
-			m_firstNode = move(it->next);
+			it.get()->next.get()->prev = nullptr;
+			m_firstNode = move(it.get()->next);
 		}
-		else if (it->data == GetBackElement())
+		else if (it.get()->data == GetBackElement())
 		{
-			it->prev->next = nullptr;
-			m_lastNode = std::move(it->prev);
+			it.get()->prev->next = nullptr;
+			m_lastNode = std::move(it.get()->prev);
 		}
 		else
 		{
-			it->next->prev = std::move(it->prev);
-			it->prev->next = std::move(it->next);
+			it.get()->next->prev = std::move(it.get()->prev);
+			it.get()->prev->next = std::move(it.get()->next);
 		}
 
 		if (m_size > 0)

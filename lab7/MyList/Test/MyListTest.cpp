@@ -249,11 +249,10 @@ BOOST_FIXTURE_TEST_SUITE(CMyList_, EmptyStringList)
 			BOOST_CHECK(list.begin() != (++list.begin()));
 		}
 
-		//TODO
-		//BOOST_AUTO_TEST_CASE(arrow_works_correctly)
-		//{
-			//BOOST_CHECK_EQUAL(list.begin()->length(), expectedStrings[0].length());
-		//}
+		BOOST_AUTO_TEST_CASE(arrow_works_correctly)
+		{
+			BOOST_CHECK_EQUAL(list.begin()->length(), expectedStrings[0].length());
+		}
 
 		BOOST_AUTO_TEST_CASE(star_works_correctly)
 		{
