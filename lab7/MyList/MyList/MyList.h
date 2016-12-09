@@ -43,55 +43,27 @@ class CMyList
 
 		CListIterator& operator++()
 		{
-			if (m_isReverse)
-			{
-				m_node = m_node->prev;
-			}
-			else
-			{
-				m_node = m_node->next.get();
-			}
+			m_node = (m_isReverse ? m_node->prev : m_node->next.get());
 			return *this;
 		}
 
-		CListIterator& operator++(int)
+		CListIterator operator++(int)
 		{
 			auto returned = *this;
-			if (m_isReverse)
-			{
-				m_node = m_node->prev;
-			}
-			else
-			{
-				m_node = m_node->next.get();
-			}
+			++(*this);
 			return returned;
 		}
 
 		CListIterator& operator--()
 		{
-			if (m_isReverse)
-			{
-				m_node = m_node->next.get();
-			}
-			else
-			{
-				m_node = m_node->prev;
-			}
+			m_node = (m_isReverse ? m_node = m_node->next.get() : m_node = m_node->prev);
 			return *this;
 		}
 
-		CListIterator& operator--(int)
+		CListIterator operator--(int)
 		{
 			auto returned = *this;
-			if (m_isReverse)
-			{
-				m_node = m_node->next.get();
-			}
-			else
-			{
-				m_node = m_node->prev;
-			}
+			--(*this);
 			return returned;
 		}
 

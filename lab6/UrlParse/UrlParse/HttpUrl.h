@@ -41,7 +41,8 @@ private:
 		std::string const& document,
 		Protocol protocol = Protocol::HTTP,
 		unsigned short port = 80);
-	std::string GetCorrectDomain(const std::string & domain);
-	std::string GetCorrectDocument(const std::string & document);
-	Protocol GetCorrectProtocol(const std::string & protocol);
+	std::string GetCorrectDomain(const std::string & domain) const;
+	std::string GetCorrectDocument(const std::string & document) const;
+	Protocol GetCorrectProtocol(const std::string & protocol) const;
+	unsigned short GetCorrectPort(const unsigned short port) const;
 };
