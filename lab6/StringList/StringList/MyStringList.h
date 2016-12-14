@@ -3,20 +3,19 @@
 #include <string>
 #include <memory>
 
-template<typename T>
-class CMyList
+class CMyStringList
 {
 	struct SNode
 	{
-		SNode(const T & data, SNode * prev, std::unique_ptr<SNode> && next) : data(data), prev(prev), next(std::move(next)) {}
+		SNode(const std::string & data, SNode * prev, std::unique_ptr<SNode> && next) : data(data), prev(prev), next(std::move(next)) {}
 
-		T data;
+		std::string data;
 		SNode *prev;
 		std::unique_ptr<SNode> next;
 
 	};
 
-	class CListIterator : public std::iterator <std::bidirectional_iterator_tag, T>
+	class CListIterator : public std::iterator <std::bidirectional_iterator_tag, std::string>
 	{
 	public:
 		CListIterator(SNode* value, bool isReverse)
@@ -25,7 +24,7 @@ class CMyList
 		{
 		}
 
-		friend class CMyList<T>;
+		friend class CMyStringList;
 
 		bool operator!=(CListIterator const& other) const
 		{
@@ -62,12 +61,12 @@ class CMyList
 			return returned;
 		}
 
-		T& operator*() const
+		std::string& operator*() const
 		{
 			return m_node->data;
 		}
 
-		T* operator->() const
+		std::string* operator->() const
 		{
 			return &m_node->data;
 		}
@@ -86,20 +85,20 @@ class CMyList
 	typedef const CListIterator ConstListIterator;
 
 public:
-	CMyList() = default;
+	CMyStringList() = default;
 
 	//copy constructor
-	CMyList(CMyList & other)
+	CMyStringList(CMyStringList & other)
 	{
 		*this = other;
 	}
 
 	//copy assignment
-	CMyList& operator=(CMyList & other)
+	CMyStringList& operator=(CMyStringList & other)
 	{
 		if (this != &other) // защита от неправильного самоприсваивания
 		{
-			CMyList tmp;
+			CMyStringList tmp;
 			for (auto const & elem : other)
 			{
 				tmp.PushBack(elem);
@@ -112,7 +111,7 @@ public:
 		return *this;
 	}
 
-	~CMyList()
+	~CMyStringList()
 	{
 		Clear();
 	}
@@ -122,7 +121,7 @@ public:
 		return m_size;
 	}
 
-	void PushBack(const T & data)
+	void PushBack(const std::string & data)
 	{
 		auto newNode = std::make_unique<SNode>(data, m_lastNode, nullptr);
 		SNode *newLastNode = newNode.get();
@@ -137,7 +136,7 @@ public:
 		m_lastNode = newLastNode;
 		++m_size;
 	}
-	void PushFront(const T & data)
+	void PushFront(const std::string & data)
 	{
 		auto newNode = std::make_unique<SNode>(data, nullptr, std::move(m_firstNode));
 		if (newNode->next)
@@ -168,19 +167,19 @@ public:
 		return m_size == 0u;
 	}
 
-	T & GetBackElement()
+	std::string & GetBackElement()
 	{
 		return m_lastNode->data;
 	}
-	const T & GetBackElement() const
+	const std::string & GetBackElement() const
 	{
 		return m_lastNode->data;
 	}
-	T & GetFrontElement()
+	std::string & GetFrontElement()
 	{
 		return m_firstNode->data;
 	}
-	const T & GetFrontElement() const
+	const std::string & GetFrontElement() const
 	{
 		return m_firstNode->data;
 	}
@@ -218,7 +217,7 @@ public:
 		return ConstListIterator(m_firstNode->prev, true);
 	}
 
-	void Insert(const ListIterator & it, T data)
+	void Insert(const ListIterator & it, std::string data)
 	{
 		if (it == begin())
 		{
@@ -246,7 +245,7 @@ public:
 				return;
 			}
 			it.get()->next.get()->prev = nullptr;
-			m_firstNode = move(it.get()->next);
+			m_firstNode = std::move(it.get()->next);
 		}
 		else if (it.get()->data == GetBackElement())
 		{
