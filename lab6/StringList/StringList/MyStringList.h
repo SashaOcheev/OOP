@@ -246,7 +246,7 @@ public:
 				return;
 			}
 			it.get()->next.get()->prev = nullptr;
-			m_firstNode = std::move(it.get()->next);
+			m_firstNode = move(it.get()->next);
 		}
 		else if (it.get()->data == GetBackElement())
 		{
