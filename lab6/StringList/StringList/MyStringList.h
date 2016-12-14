@@ -3,263 +3,77 @@
 #include <string>
 #include <memory>
 
+struct SNode
+{
+	SNode(const std::string & data, SNode * prev, std::unique_ptr<SNode> && next) : data(data), prev(prev), next(std::move(next)) {}
+
+	std::string data;
+	SNode *prev;
+	std::unique_ptr<SNode> next;
+};
+
+
+class CListIterator : public std::iterator <std::bidirectional_iterator_tag, std::string>
+{
+public:
+	CListIterator(SNode* value, bool isReverse)
+		: m_node(value)
+		, m_isReverse(isReverse)
+	{
+	}
+
+	friend class CMyStringList;
+
+	bool operator!=(CListIterator const& other) const;
+	bool operator==(CListIterator const& other) const;
+
+	CListIterator& operator++();
+	CListIterator operator++(int);
+	CListIterator& operator--();
+	CListIterator operator--(int);
+	std::string& operator*() const;
+	std::string* operator->() const;
+
+private:
+	SNode* get()const;
+
+	SNode* m_node = nullptr;
+	bool m_isReverse = false;
+};
+
+
 class CMyStringList
 {
-	struct SNode
-	{
-		SNode(const std::string & data, SNode * prev, std::unique_ptr<SNode> && next) : data(data), prev(prev), next(std::move(next)) {}
-
-		std::string data;
-		SNode *prev;
-		std::unique_ptr<SNode> next;
-
-	};
-
-	class CListIterator : public std::iterator <std::bidirectional_iterator_tag, std::string>
-	{
-	public:
-		CListIterator(SNode* value, bool isReverse)
-			: m_node(value)
-			, m_isReverse(isReverse)
-		{
-		}
-
-		friend class CMyStringList;
-
-		bool operator!=(CListIterator const& other) const
-		{
-			return m_node != other.m_node;
-		}
-		bool operator==(CListIterator const& other) const
-		{
-			return m_node == other.m_node;
-		}
-
-		CListIterator& operator++()
-		{
-			m_node = (m_isReverse ? m_node->prev : m_node->next.get());
-			return *this;
-		}
-
-		CListIterator operator++(int)
-		{
-			auto returned = *this;
-			++(*this);
-			return returned;
-		}
-
-		CListIterator& operator--()
-		{
-			m_node = (m_isReverse ? m_node = m_node->next.get() : m_node = m_node->prev);
-			return *this;
-		}
-
-		CListIterator operator--(int)
-		{
-			auto returned = *this;
-			--(*this);
-			return returned;
-		}
-
-		std::string& operator*() const
-		{
-			return m_node->data;
-		}
-
-		std::string* operator->() const
-		{
-			return &m_node->data;
-		}
-
-	private:
-		SNode* get()const
-		{
-			return m_node;
-		}
-
-		SNode* m_node = nullptr;
-		bool m_isReverse = false;
-	};
-
 	typedef CListIterator ListIterator;
 	typedef const CListIterator ConstListIterator;
 
 public:
 	CMyStringList() = default;
-
 	//copy constructor
-	CMyStringList(CMyStringList & other)
-	{
-		*this = other;
-	}
-
+	CMyStringList(CMyStringList & other);
 	//copy assignment
-	CMyStringList& operator=(CMyStringList & other)
-	{
-		if (this != &other) // защита от неправильного самоприсваивания
-		{
-			CMyStringList tmp;
-			for (auto const & elem : other)
-			{
-				tmp.PushBack(elem);
-			}
-			std::swap(m_firstNode, tmp.m_firstNode);
-			std::swap(m_lastNode, tmp.m_lastNode);
-			m_size = tmp.m_size;
-		}
-		// по соглашению всегда возвращаем *this
-		return *this;
-	}
+	CMyStringList& operator=(CMyStringList & other);
+	~CMyStringList();
 
-	~CMyStringList()
-	{
-		Clear();
-	}
-
-	size_t GetSize()
-	{
-		return m_size;
-	}
-
-	void PushBack(const std::string & data)
-	{
-		auto newNode = std::make_unique<SNode>(data, m_lastNode, nullptr);
-		SNode *newLastNode = newNode.get();
-		if (m_lastNode)
-		{
-			m_lastNode->next = std::move(newNode);
-		}
-		else
-		{
-			m_firstNode = std::move(newNode);
-		}
-		m_lastNode = newLastNode;
-		++m_size;
-	}
-	void PushFront(const std::string & data)
-	{
-		auto newNode = std::make_unique<SNode>(data, nullptr, std::move(m_firstNode));
-		if (newNode->next)
-		{
-			newNode->next->prev = newNode.get();
-		}
-		else
-		{
-			m_lastNode = newNode.get();
-		}
-		m_firstNode = std::move(newNode);
-		m_size++;
-	}
-
-	void Clear()
-	{
-		while (m_lastNode)
-		{
-			m_lastNode->next = nullptr;
-			m_lastNode = m_lastNode->prev;
-		}
-		m_firstNode = nullptr;
-		m_size = 0;
-	}
-
-	bool IsEmpty() const
-	{
-		return m_size == 0u;
-	}
-
-	std::string & GetBackElement()
-	{
-		return m_lastNode->data;
-	}
-	const std::string & GetBackElement() const
-	{
-		return m_lastNode->data;
-	}
-	std::string & GetFrontElement()
-	{
-		return m_firstNode->data;
-	}
-	const std::string & GetFrontElement() const
-	{
-		return m_firstNode->data;
-	}
-
-	ListIterator begin()
-	{
-		return ListIterator(m_firstNode.get(), false);
-	}
-	ListIterator end()
-	{
-		return ListIterator(m_lastNode->next.get(), false);
-	}
-	const ConstListIterator cbegin() const
-	{
-		return ConstListIterator(m_firstNode.get(), false);
-	}
-	const ConstListIterator cend() const
-	{
-		return ConstListIterator(m_lastNode->next.get(), false);
-	}
-	ListIterator rbegin()
-	{
-		return ListIterator(m_lastNode, true);
-	}
-	ListIterator rend()
-	{
-		return ListIterator(m_firstNode->prev, true);
-	}
-	const ConstListIterator crbegin() const
-	{
-		return ConstListIterator(m_lastNode, true);
-	}
-	const ConstListIterator crend() const
-	{
-		return ConstListIterator(m_firstNode->prev, true);
-	}
-
-	void Insert(const ListIterator & it, std::string data)
-	{
-		if (it == begin())
-		{
-			PushFront(data);
-		}
-		else if (it == end())
-		{
-			PushBack(data);
-		}
-		else
-		{
-			auto node = std::make_unique<SNode>(data, it.get()->prev, std::move(it.get()->prev->next));
-			it.get()->prev = node.get();
-			node->prev->next = std::move(node);
-		}
-	}
-
-	void Erase(const ListIterator & it)
-	{
-		if (it == begin())
-		{
-			if (m_size == 1)
-			{
-				Clear();
-				return;
-			}
-			it.get()->next.get()->prev = nullptr;
-			m_firstNode = std::move(it.get()->next);
-		}
-		else if (it.get()->data == GetBackElement())
-		{
-			it.get()->prev->next = nullptr;
-			m_lastNode = it.get()->prev;
-		}
-		else
-		{
-			it.get()->next->prev = it.get()->prev;
-			it.get()->prev->next = std::move(it.get()->next);
-		}
-
-		--m_size;
-	}
+	size_t GetSize();
+	void PushBack(const std::string & data);
+	void PushFront(const std::string & data);
+	void Clear();
+	bool IsEmpty() const;
+	std::string & GetBackElement();
+	const std::string & GetBackElement() const;
+	std::string & GetFrontElement();
+	const std::string & GetFrontElement() const;
+	ListIterator begin();
+	ListIterator end();
+	const ConstListIterator cbegin() const;
+	const ConstListIterator cend() const;
+	ListIterator rbegin();
+	ListIterator rend();
+	const ConstListIterator crbegin() const;
+	const ConstListIterator crend() const;
+	void Insert(const ListIterator & it, std::string data);
+	void Erase(const ListIterator & it);
 
 private:
 	size_t m_size = 0;
