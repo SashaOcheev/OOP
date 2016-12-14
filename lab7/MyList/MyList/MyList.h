@@ -79,7 +79,7 @@ class CMyList
 		}
 
 		SNode* m_node = nullptr;
-		bool m_isReverse = b false;
+		bool m_isReverse = false;
 	};
 
 	typedef CListIterator<T> ListIterator;
@@ -135,7 +135,6 @@ public:
 			m_firstNode = std::move(newNode);
 		}
 		m_lastNode = newLastNode;
-		m_lastNode->next = nullptr;
 		++m_size;
 	}
 	void PushFront(const T & data)
@@ -150,7 +149,6 @@ public:
 			m_lastNode = newNode.get();
 		}
 		m_firstNode = std::move(newNode);
-		m_firstNode->prev = nullptr;
 		m_size++;
 	}
 
@@ -233,38 +231,35 @@ public:
 		else
 		{
 			auto node = std::make_unique<SNode>(data, it.get()->prev, std::move(it.get()->prev->next));
-			it.get()->prev = std::move(node.get());
+			it.get()->prev = node.get();
 			node->prev->next = std::move(node);
 		}
 	}
+
 	void Erase(const ListIterator & it)
 	{
-		if (m_size == 1)
-		{
-			Clear();
-			return;
-		}
-
 		if (it == begin())
 		{
+			if (m_size == 1)
+			{
+				Clear();
+				return;
+			}
 			it.get()->next.get()->prev = nullptr;
 			m_firstNode = move(it.get()->next);
 		}
 		else if (it.get()->data == GetBackElement())
 		{
 			it.get()->prev->next = nullptr;
-			m_lastNode = std::move(it.get()->prev);
+			m_lastNode = it.get()->prev;
 		}
 		else
 		{
-			it.get()->next->prev = std::move(it.get()->prev);
+			it.get()->next->prev = it.get()->prev;
 			it.get()->prev->next = std::move(it.get()->next);
 		}
 
-		if (m_size > 0)
-		{
-			m_size--;
-		}
+		--m_size;
 	}
 
 private:

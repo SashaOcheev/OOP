@@ -119,6 +119,7 @@ BOOST_FIXTURE_TEST_SUITE(CMyList_, EmptyStringList)
 			for (auto it = list.cbegin(); it != list.cend(); ++it)
 			{
 				BOOST_CHECK_EQUAL(*it, expectedStrings[counter]);
+				
 				counter++;
 			}
 		}
