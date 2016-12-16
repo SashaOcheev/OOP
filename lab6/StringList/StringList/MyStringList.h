@@ -16,11 +16,6 @@ struct SNode
 class CListIterator : public std::iterator <std::bidirectional_iterator_tag, std::string>
 {
 public:
-	CListIterator(SNode* value, bool isReverse)
-		: m_node(value)
-		, m_isReverse(isReverse)
-	{
-	}
 
 	friend class CMyStringList;
 
@@ -35,6 +30,12 @@ public:
 	std::string* operator->() const;
 
 private:
+	CListIterator(SNode* value, bool isReverse)
+		: m_node(value)
+		, m_isReverse(isReverse)
+	{
+	}
+
 	SNode* get()const;
 
 	SNode* m_node = nullptr;
