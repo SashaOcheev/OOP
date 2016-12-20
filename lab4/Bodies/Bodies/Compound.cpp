@@ -24,7 +24,6 @@ void CCompound::AddBody(std::shared_ptr<CBody> &&bodyPtr)
 
 bool CCompound::CanAdd(CBody * mainPtr, CBody * bodyPtr) const
 {
-	std::cout << mainPtr << " " << bodyPtr << std::endl;
 	if (mainPtr == bodyPtr)
 	{
 		return false;
@@ -41,7 +40,6 @@ bool CCompound::CanAdd(CBody * mainPtr, CBody * bodyPtr) const
 	}
 	catch (const std::bad_cast)
 	{
-		std::cout << "bad cast" << std::endl;
 	}
 
 	return true;

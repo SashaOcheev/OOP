@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "program.h"
+/*#include "program.h"
 #include "BodiesVector.h"
 
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type);
@@ -102,4 +102,4 @@ std::vector<std::shared_ptr<CBody> > ReadBodies(std::istream & strm)
 	}
 
 	return m_bodyPtrs;
-}
+}*/
