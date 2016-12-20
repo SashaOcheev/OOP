@@ -6,14 +6,12 @@ std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type);
 
 std::string GetHelp()
 {
-	return
-R"(Enter one of these bodies:
-	Cone <density> <radius> <height>
-	Cylinder <density> <radius> <height>
-	Parallelepiped <density> <width> <height> <depth>
-	Sphere <density> <radius>
-	Compound
-	next for end)";
+	return "Enter figure: cone, cylinder, parallelepiped, sphere or compound\n";
+}
+
+std::string GetHelpForCompound()
+{
+	return "Enter figure: cone, cylinder, parallelepiped, sphere or compound; next for end\n";
 }
 
 void GetMaxMassBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs)
@@ -56,6 +54,7 @@ std::shared_ptr<CCompound> GetCompound(std::istream &strm)
 	std::string type;
 	while (type != "next")
 	{
+		std::cout << GetHelpForCompound();
 		strm >> type;
 		auto body = GetBody(strm, type);
 		if (body)
@@ -67,26 +66,44 @@ std::shared_ptr<CCompound> GetCompound(std::istream &strm)
 	return compound;
 }
 
+bool GetHelpForCone(std::istream &strm, double &density, double &radius, double &height)
+{
+	std::cout << "Enter <density> <radius> <height>\n";
+	return bool(strm >> density >> radius >> height);
+}
+
+bool GetHelpForParallelepiped(std::istream &strm, double &density, double &width, double &height, double &depth)
+{
+	std::cout << "Enter <density> <width> <height> <depth>\n";
+	return bool(strm >> density >> width >> height >> depth);
+}
+
+bool GetHelpForSphere(std::istream &strm, double &density, double &radius)
+{
+	std::cout << "Enter <density> <radius>\n";
+	return bool(strm >> density >> radius);
+}
+
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type)
 {
-	int a, b, c, d;
-	if (type == "Cone" && strm >> a >> b >> c)
+	double a, b, c, d;
+	if (type == "cone" && GetHelpForCone(strm, a, b, c))
 	{
 		return std::make_shared<CCone>(CCone(a, b, c));
 	}
-	else if (type == "Cylinder" && strm >> a >> b >> c)
+	else if (type == "cylinder" && GetHelpForCone(strm, a, b, c))
 	{
 		return std::make_shared<CCylinder>(CCylinder(a, b, c));
 	}
-	else if (type == "Parallelepiped" && strm >> a >> b >> c >> d)
+	else if (type == "parallelepiped" && GetHelpForParallelepiped(strm, a, b, c, d))
 	{
 		return std::make_shared<CParallelepiped>(CParallelepiped(a, b, c, d));
 	}
-	else if (type == "Sphere" && strm >> a >> b)
+	else if (type == "sphere" && GetHelpForSphere(strm, a, b))
 	{
 		return std::make_shared<CSphere>(CSphere(a, b));
 	}
-	else if (type == "Compound")
+	else if (type == "compound")
 	{
 		return GetCompound(strm);
 	}
@@ -100,6 +117,7 @@ std::vector<std::shared_ptr<CBody> > ReadBodies(std::istream & strm)
 {
 	std::vector<std::shared_ptr<CBody> > m_bodyPtrs;
 	std::string type;
+	std::cout << GetHelp();
 	while (strm >> type)
 	{
 		auto body = GetBody(strm, type);
@@ -111,6 +129,7 @@ std::vector<std::shared_ptr<CBody> > ReadBodies(std::istream & strm)
 		{
 			strm.clear();
 		}
+		std::cout << GetHelp();
 	}
 
 	return m_bodyPtrs;
