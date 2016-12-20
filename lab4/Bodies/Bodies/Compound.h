@@ -11,7 +11,7 @@ public:
 	double GetDensity() const override;
 	double GetVolume() const override;
 	double GetMass() const override;
-	void AddBody(std::shared_ptr<CBody> &&bodyPtr);
+	void AddBody(std::shared_ptr<CBody> bodyPtr);
 protected:
 	void AppendProperties(std::ostream &strm) const override;
 private:

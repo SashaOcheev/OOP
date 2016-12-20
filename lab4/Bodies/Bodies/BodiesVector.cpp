@@ -1,8 +1,20 @@
 #include "stdafx.h"
-/*#include "program.h"
+#include "program.h"
 #include "BodiesVector.h"
 
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type);
+
+std::string GetHelp()
+{
+	return
+R"(Enter one of these bodies:
+	Cone <density> <radius> <height>
+	Cylinder <density> <radius> <height>
+	Parallelepiped <density> <width> <height> <depth>
+	Sphere <density> <radius>
+	Compound
+	next for end)";
+}
 
 void GetMaxMassBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs)
 {
@@ -22,7 +34,7 @@ void GetMinWeightBody(std::ostream &strm, const std::vector<std::shared_ptr<CBod
 {
 	if (m_bodyPtrs.empty())
 	{
-			return;
+		return;
 	}
 	auto GetWeight = [&liquidDensity](const std::shared_ptr<CBody> &body)->double
 	{
@@ -38,9 +50,9 @@ void GetMinWeightBody(std::ostream &strm, const std::vector<std::shared_ptr<CBod
 }
 
 
-std::shared_ptr<CBody> GetCompound(std::istream &strm)
+std::shared_ptr<CCompound> GetCompound(std::istream &strm)
 {
-	CCompound compound;
+	std::shared_ptr<CCompound> compound = std::make_shared<CCompound>();
 	std::string type;
 	while (type != "next")
 	{
@@ -48,11 +60,11 @@ std::shared_ptr<CBody> GetCompound(std::istream &strm)
 		auto body = GetBody(strm, type);
 		if (body)
 		{
-			compound.AddBody(std::move(body));
+			compound->AddBody(body);
 		}
 	}
 
-	return std::make_shared<CBody>(compound);
+	return compound;
 }
 
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type)
@@ -76,7 +88,7 @@ std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type)
 	}
 	else if (type == "Compound")
 	{
-		return std::make_shared<CCompound>(GetCompound(strm));
+		return GetCompound(strm);
 	}
 	else
 	{
@@ -102,4 +114,4 @@ std::vector<std::shared_ptr<CBody> > ReadBodies(std::istream & strm)
 	}
 
 	return m_bodyPtrs;
-}*/
+}
