@@ -3,16 +3,12 @@
 #include "BodiesVector.h"
 
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type);
+bool GetHelpForCone(std::istream &strm, double &density, double &radius, double &height);
+bool GetHelpForParallelepiped(std::istream &strm, double &density, double &width, double &height, double &depth);
+bool GetHelpForSphere(std::istream &strm, double &density, double &radius);
+std::string GetHelp();
+std::string GetHelpForCompound();
 
-std::string GetHelp()
-{
-	return "Enter figure: cone, cylinder, parallelepiped, sphere or compound\n";
-}
-
-std::string GetHelpForCompound()
-{
-	return "Enter figure: cone, cylinder, parallelepiped, sphere or compound; next for end\n";
-}
 
 void GetMaxMassBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs)
 {
@@ -66,24 +62,6 @@ std::shared_ptr<CCompound> GetCompound(std::istream &strm)
 	return compound;
 }
 
-bool GetHelpForCone(std::istream &strm, double &density, double &radius, double &height)
-{
-	std::cout << "Enter <density> <radius> <height>\n";
-	return bool(strm >> density >> radius >> height);
-}
-
-bool GetHelpForParallelepiped(std::istream &strm, double &density, double &width, double &height, double &depth)
-{
-	std::cout << "Enter <density> <width> <height> <depth>\n";
-	return bool(strm >> density >> width >> height >> depth);
-}
-
-bool GetHelpForSphere(std::istream &strm, double &density, double &radius)
-{
-	std::cout << "Enter <density> <radius>\n";
-	return bool(strm >> density >> radius);
-}
-
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type)
 {
 	double a, b, c, d;
@@ -133,4 +111,32 @@ std::vector<std::shared_ptr<CBody> > ReadBodies(std::istream & strm)
 	}
 
 	return m_bodyPtrs;
+}
+
+bool GetHelpForCone(std::istream &strm, double &density, double &radius, double &height)
+{
+	std::cout << "Enter <density> <radius> <height>\n";
+	return bool(strm >> density >> radius >> height);
+}
+
+bool GetHelpForParallelepiped(std::istream &strm, double &density, double &width, double &height, double &depth)
+{
+	std::cout << "Enter <density> <width> <height> <depth>\n";
+	return bool(strm >> density >> width >> height >> depth);
+}
+
+bool GetHelpForSphere(std::istream &strm, double &density, double &radius)
+{
+	std::cout << "Enter <density> <radius>\n";
+	return bool(strm >> density >> radius);
+}
+
+std::string GetHelp()
+{
+	return "Enter figure: cone, cylinder, parallelepiped, sphere or compound\n";
+}
+
+std::string GetHelpForCompound()
+{
+	return "Enter figure: cone, cylinder, parallelepiped, sphere or compound; next for end\n";
 }
