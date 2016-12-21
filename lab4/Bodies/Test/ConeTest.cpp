@@ -1,7 +1,6 @@
 
 #include "stdafx.h"
 
-#include <boost/test/output/compiler_log_formatter.hpp>
 #include "../Bodies/program.h"
 
 

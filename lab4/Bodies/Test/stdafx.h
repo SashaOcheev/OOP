@@ -21,10 +21,8 @@
 #include <algorithm>
 #include <numeric>
 
-#include <boost/algorithm/string/replace.hpp>
-
-// TODO: reference additional headers your program requires here
-#define BOOST_TEST_MODULE BodiesTest
+//#define BOOST_TEST_MODULE UrlParseTest
 #define BOOST_TEST_INCLUDED
 #pragma warning (disable: 4702)
 #include <boost/test/unit_test.hpp>
+#include <boost/algorithm/string/replace.hpp>
