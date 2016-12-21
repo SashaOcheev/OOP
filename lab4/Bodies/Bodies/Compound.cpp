@@ -75,6 +75,18 @@ void CCompound::AppendProperties(std::ostream &strm) const
 {
 	for (auto const &body : m_bodyPtrs)
 	{
-		strm << body->ToString();
+		auto str = body->ToString();
+		for (size_t i = 0; i < str.size(); ++i)
+		{
+			if (str[i] == '\n' && i + 1 < str.size())
+			{
+				str.insert(i + 1, "\t");
+			}
+			else if (i == 0)
+			{
+				str.insert(i++, "\t");
+			}
+		}
+		strm << str;
 	}
 }

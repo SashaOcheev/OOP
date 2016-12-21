@@ -47,27 +47,27 @@ BOOST_FIXTURE_TEST_SUITE(Compound, Compound_)
 	density = 8.8
 	volume = 10358.81116
 	mass = 91157.53817
-Cone:
-	density = 8.8
-	volume = 10358.81116
-	mass = 91157.53817
-	radius = 42.8
-	height = 5.4
+	Cone:
+		density = 8.8
+		volume = 10358.81116
+		mass = 91157.53817
+		radius = 42.8
+		height = 5.4
 )";
 		const char *const fatherString = R"(Compound:
 	density = 8.8
 	volume = 10358.81116
 	mass = 91157.53817
-Compound:
-	density = 8.8
-	volume = 10358.81116
-	mass = 91157.53817
-Cone:
-	density = 8.8
-	volume = 10358.81116
-	mass = 91157.53817
-	radius = 42.8
-	height = 5.4
+	Compound:
+		density = 8.8
+		volume = 10358.81116
+		mass = 91157.53817
+		Cone:
+			density = 8.8
+			volume = 10358.81116
+			mass = 91157.53817
+			radius = 42.8
+			height = 5.4
 )";
 		compound_body_()
 		{
