@@ -51,11 +51,17 @@ std::shared_ptr<CCompound> GetCompound(std::istream &strm)
 	while (type != "next")
 	{
 		std::cout << GetHelpForCompound();
-		strm >> type;
-		auto body = GetBody(strm, type);
-		if (body)
+		if (strm >> type)
 		{
-			compound->AddBody(body);
+			auto body = GetBody(strm, type);
+			if (body)
+			{
+				compound->AddBody(body);
+			}
+		}
+		else
+		{
+			type = "next";
 		}
 	}
 
