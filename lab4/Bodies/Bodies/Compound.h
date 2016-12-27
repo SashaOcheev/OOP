@@ -12,9 +12,11 @@ public:
 	double GetVolume() const override;
 	double GetMass() const override;
 	void AddBody(const std::shared_ptr<CBody> &bodyPtr);
+
+	~CCompound();
 protected:
 	void AppendProperties(std::ostream &strm) const override;
 private:
+	bool CanAdd(const CBody * mayFatherPtr, const CBody *bodyPtr);
 	std::vector<std::shared_ptr<CBody> > m_bodyPtrs;
-	bool CanAdd(CBody * mainPtr, CBody * bodyPtr) const;
 };

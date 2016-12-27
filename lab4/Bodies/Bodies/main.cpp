@@ -10,7 +10,5 @@ int main()
 	auto vect = ReadBodies(std::cin);
 	GetMaxMassBody(std::cout, vect);
 	GetMinWeightBody(std::cout, vect);
-
-    return 0;
 }
 

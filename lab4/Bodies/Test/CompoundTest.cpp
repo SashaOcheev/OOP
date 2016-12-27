@@ -39,6 +39,7 @@ BOOST_FIXTURE_TEST_SUITE(Compound, Compound_)
 
 	struct compound_body_
 	{
+		std::shared_ptr<CCone> cone = std::make_shared<CCone>(CCone(8.8, 42.8, 5.4));
 		std::shared_ptr<CCompound> compound = std::make_shared<CCompound>(CCompound());
 		std::shared_ptr<CCompound> father = std::make_shared<CCompound>(CCompound());
 		const double expectedDensity = 8.8;
@@ -71,7 +72,7 @@ BOOST_FIXTURE_TEST_SUITE(Compound, Compound_)
 )";
 		compound_body_()
 		{
-			compound->AddBody(std::make_shared<CCone>(CCone(8.8, 42.8, 5.4)));
+			compound->AddBody(cone);
 			father->AddBody(compound);
 		}
 	};
@@ -106,6 +107,16 @@ BOOST_FIXTURE_TEST_SUITE(Compound, Compound_)
 		{
 			compound->AddBody(father);
 			BOOST_CHECK_EQUAL(compound->ToString(), expectedString);
+		}
+		BOOST_AUTO_TEST_CASE(can_not_add_one_body)
+		{
+			std::shared_ptr<CCompound> oneMoreCompound = std::make_shared<CCompound>(CCompound());
+			oneMoreCompound->AddBody(cone);
+			BOOST_CHECK_EQUAL(oneMoreCompound->ToString(), R"(Compound:
+	density = 0
+	volume = 0
+	mass = 0
+)");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 

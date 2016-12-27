@@ -4,6 +4,7 @@
 class CBody
 {
 public:
+	friend class CCompound;
 	CBody(const std::string &type);
 
 	virtual double GetDensity() const = 0;
@@ -15,5 +16,6 @@ public:
 protected:
 	virtual void AppendProperties(std::ostream &strm) const = 0;
 private:
+	CBody *m_fatherPtr = nullptr;
 	std::string m_type;
 };
