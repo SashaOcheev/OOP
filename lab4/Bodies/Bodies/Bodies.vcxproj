@@ -162,7 +162,7 @@
     <ClInclude Include="Compound.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Cylinder.h" />
-    <ClInclude Include="GetBodies.h" />
+    <ClInclude Include="HandleBodiesFromStream.h" />
     <ClInclude Include="Parallelepiped.h" />
     <ClInclude Include="Bodies.h" />
     <ClInclude Include="Sphere.h" />
@@ -176,7 +176,7 @@
     <ClCompile Include="Compound.cpp" />
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cylinder.cpp" />
-    <ClCompile Include="GetBodies.cpp" />
+    <ClCompile Include="HandleBodiesFromStream.cpp" />
     <ClCompile Include="Parallelepiped.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="main.cpp" />

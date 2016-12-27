@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "Bodies.h"
-#include "GetBodies.h"
+#include "HandleBodiesFromStream.h"
 
 int main()
 {

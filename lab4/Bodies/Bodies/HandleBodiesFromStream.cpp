@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "GetBodies.h"
+#include "HandleBodiesFromStream.h"
 #include "Bodies.h"
 
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type, unsigned tabCount = 0);

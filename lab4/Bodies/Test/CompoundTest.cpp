@@ -108,7 +108,7 @@ BOOST_FIXTURE_TEST_SUITE(Compound, Compound_)
 			compound->AddBody(father);
 			BOOST_CHECK_EQUAL(compound->ToString(), expectedString);
 		}
-		BOOST_AUTO_TEST_CASE(can_not_add_one_body)
+		BOOST_AUTO_TEST_CASE(can_not_add_same_body)
 		{
 			std::shared_ptr<CCompound> oneMoreCompound = std::make_shared<CCompound>();
 			oneMoreCompound->AddBody(cone);
