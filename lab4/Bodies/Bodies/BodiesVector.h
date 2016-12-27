@@ -1,5 +1,17 @@
 #pragma once
+#include "Body.h"
 
-std::vector<std::shared_ptr<CBody>> ReadBodies(std::istream & strm);
+class CBodiesVector
+{
+public:
+	void SetLiquidDensity(double density);
+	void PushBack(const std::shared_ptr<CBody> &m_bodyPtr);
+	std::string GetMaxMassBody();
+	std::string GetMinWeightBody();
+private:
+	std::vector<std::shared_ptr<CBody>> m_bodyPtrs;
+	double m_liquidDensity = 0.0;
+};
+
 void GetMaxMassBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs);
 void GetMinWeightBody(std::ostream &strm, const std::vector<std::shared_ptr<CBody> > & m_bodyPtrs, const double liquidDensity = 1000.0);

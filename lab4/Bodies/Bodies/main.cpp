@@ -3,12 +3,12 @@
 
 #include "stdafx.h"
 #include "program.h"
-#include "BodiesVector.h"
+#include "GetBodies.h"
 
 int main()
 {
 	auto vect = ReadBodies(std::cin);
-	GetMaxMassBody(std::cout, vect);
-	GetMinWeightBody(std::cout, vect);
+	std::cout << vect.GetMaxMassBody() << std::endl;
+	std::cout << vect.GetMinWeightBody() << std::endl;
 }
 

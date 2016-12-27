@@ -51,6 +51,9 @@
     <ClInclude Include="BodiesVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GetBodies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BodiesVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GetBodies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
