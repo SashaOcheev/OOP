@@ -38,19 +38,19 @@ std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type, unsi
 	double a, b, c, d;
 	if (type == "cone" && GetHelpForCone(strm, a, b, c, tabCount))
 	{
-		return std::make_shared<CCone>(CCone(a, b, c));
+		return std::make_shared<CCone>(a, b, c);
 	}
 	else if (type == "cylinder" && GetHelpForCone(strm, a, b, c, tabCount))
 	{
-		return std::make_shared<CCylinder>(CCylinder(a, b, c));
+		return std::make_shared<CCylinder>(a, b, c);
 	}
 	else if (type == "parallelepiped" && GetHelpForParallelepiped(strm, a, b, c, d, tabCount))
 	{
-		return std::make_shared<CParallelepiped>(CParallelepiped(a, b, c, d));
+		return std::make_shared<CParallelepiped>(a, b, c, d);
 	}
 	else if (type == "sphere" && GetHelpForSphere(strm, a, b, tabCount))
 	{
-		return std::make_shared<CSphere>(CSphere(a, b));
+		return std::make_shared<CSphere>(a, b);
 	}
 	else if (type == "compound")
 	{
