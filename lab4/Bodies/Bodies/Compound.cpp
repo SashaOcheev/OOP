@@ -14,7 +14,7 @@ CCompound::CCompound()
 }
 
 
-void CCompound::AddBody(std::shared_ptr<CBody> bodyPtr)
+void CCompound::AddBody(const std::shared_ptr<CBody> &bodyPtr)
 {
 	if (CanAdd(this, bodyPtr.get()))
 	{
