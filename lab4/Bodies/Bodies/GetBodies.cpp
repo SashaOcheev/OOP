@@ -62,7 +62,7 @@ std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type, unsi
 	}
 }
 
-CBodiesVector ReadBodies(std::istream & strm)
+CBodiesVector GetBodiesFromStream(std::istream & strm)
 {
 	std::string type;
 	std::cout << GetHelp();

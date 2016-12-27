@@ -7,7 +7,7 @@
 
 int main()
 {
-	auto vect = ReadBodies(std::cin);
+	auto vect = GetBodiesFromStream(std::cin);
 	std::cout << vect.GetMaxMassBody() << std::endl;
 	std::cout << vect.GetMinWeightBody() << std::endl;
 }

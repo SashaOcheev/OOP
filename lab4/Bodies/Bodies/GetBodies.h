@@ -2,4 +2,4 @@
 
 #include "BodiesVector.h"
 
-CBodiesVector ReadBodies(std::istream & strm);
+CBodiesVector GetBodiesFromStream(std::istream & strm);
