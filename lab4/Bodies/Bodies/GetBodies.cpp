@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GetBodies.h"
-#include "program.h"
+#include "Bodies.h"
 
 std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type, unsigned tabCount = 0);
 bool GetHelpForCone(std::istream &strm, double &density, double &radius, double &height, unsigned tabCount = 0);

@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-#include "../Bodies/program.h"
+#include "../Bodies/Bodies.h"
 
 
 struct Cylinder_

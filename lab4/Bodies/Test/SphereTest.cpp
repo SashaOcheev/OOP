@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "../Bodies/program.h"
+#include "../Bodies/Bodies.h"
 
 
 struct Sphere_

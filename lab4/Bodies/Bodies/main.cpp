@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "program.h"
+#include "Bodies.h"
 #include "GetBodies.h"
 
 int main()

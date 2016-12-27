@@ -45,13 +45,13 @@
     <ClInclude Include="Compound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="program.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BodiesVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GetBodies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bodies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

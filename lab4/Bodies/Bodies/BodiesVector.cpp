@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "program.h"
+#include "Bodies.h"
 #include "BodiesVector.h"
 
 
