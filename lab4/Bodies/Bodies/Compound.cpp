@@ -38,7 +38,7 @@ bool CCompound::CanAdd(CBody * mainPtr, CBody * bodyPtr) const
 				return false;
 		}
 	}
-	catch (const std::bad_cast)
+	catch (const std::bad_cast&)
 	{
 	}
 
