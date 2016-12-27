@@ -6,7 +6,7 @@ std::shared_ptr<CBody> GetBody(std::istream &strm, const std::string &type, unsi
 bool GetHelpForCone(std::istream &strm, double &density, double &radius, double &height, unsigned tabCount = 0);
 bool GetHelpForParallelepiped(std::istream &strm, double &density, double &width, double &height, double &depth, unsigned tabCount = 0);
 bool GetHelpForSphere(std::istream &strm, double &density, double &radius, unsigned tabCount = 0);
-std::string GetHelp(unsigned tabCount = 0);
+std::string GetHelp();
 std::string GetHelpForCompound(unsigned tabCount = 0);
 
 std::shared_ptr<CCompound> GetCompound(std::istream &strm, unsigned tabCount = 0)
@@ -102,11 +102,9 @@ bool GetHelpForSphere(std::istream &strm, double &density, double &radius, unsig
 	return bool(strm >> density >> radius);
 }
 
-std::string GetHelp(unsigned tabCount)
+std::string GetHelp()
 {
-	return std::string(tabCount, '\t') +
-		std::string("Enter figure: cone, cylinder, parallelepiped, sphere or compound\n") +
-		std::string(tabCount, '\t');
+	return std::string("Enter figure: cone, cylinder, parallelepiped, sphere or compound\n");
 }
 
 std::string GetHelpForCompound(unsigned tabCount)
