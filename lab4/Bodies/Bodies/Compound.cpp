@@ -1,10 +1,4 @@
 #include "stdafx.h"
-#include <memory>
-#include <vector>
-#include <numeric>
-#include <sstream>
-#include <algorithm>
-#include <exception>
 #include "Compound.h"
 
 

@@ -1,8 +1,5 @@
 
 #include "stdafx.h"
-#include <sstream>
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include "Sphere.h"
 
 CSphere::CSphere(double density, double radius)

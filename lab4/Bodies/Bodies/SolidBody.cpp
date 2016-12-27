@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <sstream>
 #include "SolidBody.h"
 
 CSolidBody::CSolidBody(const std::string &type, double density)
